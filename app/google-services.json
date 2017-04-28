@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "484998080513",
+    "firebase_url": "https://washaf-d566c.firebaseio.com",
+    "project_id": "washaf-d566c",
+    "storage_bucket": "washaf-d566c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484998080513:android:8019b4931fd19ea9",
+        "android_client_info": {
+          "package_name": "comp4900.bcit.ca.washaf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484998080513-njt0ln3oa7fmrbsaug7jbjcjj38a03dc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYBpK6YatlCfxrMy6EZ8qm8xcrqKxKMI4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
