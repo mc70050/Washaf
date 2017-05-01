@@ -20,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @Bind(R.id.input_email) EditText _emailText;
-    @Bind(R.id.input_password) EditText _passwordText;
-    @Bind(R.id.btn_login) Button _loginButton;
-    @Bind(R.id.link_signup) TextView _signupLink;
+    @Bind(R.id.input_email)     EditText _emailText;
+    @Bind(R.id.input_password)  EditText _passwordText;
+    @Bind(R.id.btn_login)       Button   _loginButton;
+    @Bind(R.id.link_signup)     TextView _signupLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start the Signup activity
-//                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-//                startActivityForResult(intent, REQUEST_SIGNUP);
-//                finish();
-//                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
+                //finish();
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
     }
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Disable going back to the MainActivity
-        moveTaskToBack(true);
+        moveTaskToBack(false);
     }
 
     public void onLoginSuccess() {
