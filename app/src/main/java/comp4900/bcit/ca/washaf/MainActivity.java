@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
+        startActivity(new Intent(this, TestPage.class));
 
         new android.os.Handler().postDelayed(
                 new Runnable() {

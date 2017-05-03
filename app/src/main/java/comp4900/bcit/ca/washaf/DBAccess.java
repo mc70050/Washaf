@@ -8,6 +8,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Michael Chen on 2017-05-01.
  * This class is in charge of accessing with database.
@@ -17,6 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 public class DBAccess {
 
     private static final String TAG = "DBAccess";
+    private static int nextUserId = 1;
+    private static List<User> userList;
     private FirebaseDatabase database;
     private DatabaseReference mRef;
 
@@ -26,16 +31,23 @@ public class DBAccess {
      */
     public DBAccess() {
         database = FirebaseDatabase.getInstance();
-        mRef = database.getReference();
+        mRef = database.getReference("user");
 
+        userList = new ArrayList<>();
         // Read from the database
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("DATA CHANGE", "activated");
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + value);
+                userList.clear();
+                for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
+                    User user = snapShot.getValue(User.class);
+                    userList.add(user);
+                    Log.d(TAG, "user is " + user.getFirstName() + " " + user.getLastName());
+                }
+                Log.d(TAG, "there are " + userList.size() + " users");
             }
 
             @Override
@@ -71,7 +83,10 @@ public class DBAccess {
     }
 
     public void writeUser(User user) {
-        mRef.child("user").setValue(user);
+        String id = String.format("%08d", nextUserId);
+        Log.d(TAG, "ID is: " + id);
+        nextUserId++;
+        mRef.child(id).setValue(user);
     }
 
 

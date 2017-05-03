@@ -13,10 +13,10 @@ public class User {
 
     private String  firstName;
     private String  lastName;
-    private String address;
+    private String  address;
     private String  email;
     private String  phoneNum;
-    private long type;
+    private long    type;
 
     /**
      * Default constructor
@@ -31,13 +31,13 @@ public class User {
      * is called.
      * @param firstName first name
      * @param lastName last name
-     * @param address address in the form of: 1111 example street
+     * @param address address in the form given by Google Place API
      * @param email email address
      * @param phoneNum phone number
      * @param type type of user, see class UserType for more detail
      */
-    public User(String firstName, String lastName, Address address, String email,
-                String phoneNum, UserType type) {
+    public User(String firstName, String lastName, String address, String email,
+                String phoneNum, long type) {
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
@@ -53,23 +53,21 @@ public class User {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = formatNames(firstName);
     }
 
-    public String getLastName() {
-        return lastName;
-    }
+    public String getLastName() { return lastName; }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = formatNames(lastName);
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address.toString();
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getEmail() {
@@ -85,15 +83,15 @@ public class User {
     }
 
     public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+        this.phoneNum = formatPhone(phoneNum);
     }
 
     public long getType() {
         return type;
     }
 
-    public void setType(UserType type) {
-        this.type = type.ordinal();
+    public void setType(long type) {
+        this.type = type;
     }
 
     // End of all setters and getters
@@ -115,4 +113,12 @@ public class User {
         return (getType() == UserType.CUSTOMER.ordinal()) ? true : false;
     }
     // End of functions for checking user type
+
+    private String formatNames(String s) {
+        return s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
+    }
+
+    private String formatPhone(String s) {
+        return s.substring(0,3) + "-" + s.substring(3,6) + "-" + s.substring(6);
+    }
 }

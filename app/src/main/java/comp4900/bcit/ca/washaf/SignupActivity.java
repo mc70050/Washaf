@@ -39,6 +39,7 @@ public class SignupActivity extends AppCompatActivity {
     @Bind(R.id.input_password_check) EditText _passwordCheckText;
     @Bind(R.id.btn_signup)          Button   _signupButton;
     @Bind(R.id.link_login)          TextView _loginLink;
+    @Bind(R.id.test)                TextView _testLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,19 @@ public class SignupActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
             }
         });
+        _testLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                test();
+            }
+        });
+
         setTextWatcher();
+    }
+
+    public void test() {
+        Log.d(TAG, "test in progress");
+        saveUser("Robert", "Chen", "mc700@gmail.com", "6048082829", "Dubai");
     }
 
     /**
@@ -88,6 +101,7 @@ public class SignupActivity extends AppCompatActivity {
         final String email      = _emailText.getText().toString();
         final String password   = _passwordText.getText().toString();
         final String phone      = _phoneText.getText().toString();
+        final String address    = _addressText.getText().toString();
 
 
         // TODO: Implement your own signup logic here.
@@ -96,7 +110,8 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:"
+                                + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -106,9 +121,7 @@ public class SignupActivity extends AppCompatActivity {
                             onSignupFailed();
                         } else {
                             Log.d(TAG, "sign up successful");
-                            // Validation on the new Address should be done inside Address
-//                            saveUser(fName, lName, email, phone,
-//                                    new Address(addressParts[0], Integer.parseInt(addressParts[1]), addressParts[2]));
+                            saveUser(fName, lName, email, phone, address);
                             onSignupSuccess();
                         }
                     }
@@ -123,9 +136,9 @@ public class SignupActivity extends AppCompatActivity {
         finish();
     }
 
-    private void saveUser(String fName, String lName, String email, String phone, Address address) {
+    private void saveUser(String fName, String lName, String email, String phone, String address) {
         DBAccess db = new DBAccess();
-        db.writeUser(new User(fName, lName, address, email, phone, UserType.CUSTOMER));
+        db.writeUser(new User(fName, lName, address, email, phone, UserType.CUSTOMER.ordinal()));
     }
 
     public void onSignupFailed() {
@@ -135,9 +148,9 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean validate() {
-        if (checkFirstName(_firstNameText.toString()) && checkLastName(_lastNameText.toString())
-                && checkEmail(_emailText.toString())  && checkPassword(_passwordText.toString())
-                && checkPhone(_phoneText.toString())  && checkRePassword(_passwordCheckText.toString())) {
+        if (checkFirstName(_firstNameText.getText().toString()) && checkLastName(_lastNameText.getText().toString())
+                && checkEmail(_emailText.getText().toString())  && checkPassword(_passwordText.getText().toString())
+                && checkPhone(_phoneText.getText().toString())  && checkRePassword(_passwordCheckText.getText().toString())) {
             return true;
         } else {
             return false;
@@ -185,7 +198,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean checkRePassword(String s) {
-        if (s.isEmpty() || !_passwordText.toString().equals(s)) {
+        if (s.isEmpty() || !_passwordText.getText().toString().equals(s)) {
             _passwordCheckText.setError("Please enter an identical password");
             return false;
         } else {
@@ -249,11 +262,22 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(final CharSequence s, int start, int before, int count) {}
         });
+        _passwordCheckText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                String value = s.toString();
+                checkRePassword(value);
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(final CharSequence s, int start, int before, int count) {}
+        });
         _phoneText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 String value = s.toString();
-                checkPassword(value);
+                checkPhone(value);
             }
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -265,9 +289,9 @@ public class SignupActivity extends AppCompatActivity {
     public void searchAddress(final View view) {
         int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
         try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                            .build(this);
+            PlaceAutocomplete.IntentBuilder builder = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY);
+            builder.setBoundsBias(null);
+            Intent intent = builder.build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
             // TODO: Handle the error.
