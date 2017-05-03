@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void test() {
         Log.d(TAG, "test in progress");
-        saveUser("Robert", "Chen", "mc700@gmail.com", "6048082829", "Dubai");
+        saveUser("UID", "Robert", "Chen", "mc700@gmail.com", "6048082829", "Dubai");
     }
 
     /**
@@ -105,7 +105,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
         // TODO: Implement your own signup logic here.
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -121,7 +121,8 @@ public class SignupActivity extends AppCompatActivity {
                             onSignupFailed();
                         } else {
                             Log.d(TAG, "sign up successful");
-                            saveUser(fName, lName, email, phone, address);
+                            Log.d(TAG, auth.getCurrentUser().getUid() + " is UID");
+                            saveUser(auth.getCurrentUser().getUid(), fName, lName, email, phone, address);
                             onSignupSuccess();
                         }
                     }
@@ -136,9 +137,9 @@ public class SignupActivity extends AppCompatActivity {
         finish();
     }
 
-    private void saveUser(String fName, String lName, String email, String phone, String address) {
+    private void saveUser(String uid, String fName, String lName, String email, String phone, String address) {
         DBAccess db = new DBAccess();
-        db.writeUser(new User(fName, lName, address, email, phone, UserType.CUSTOMER.ordinal()));
+        db.writeUser(uid, new User(fName, lName, address, email, phone, UserType.CUSTOMER.ordinal()));
     }
 
     public void onSignupFailed() {
@@ -188,8 +189,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean checkPassword(String s) {
-        if (s.isEmpty() || s.length() < 4) {
-            _passwordText.setError("password needs to be more than 4 characters");
+        if (s.isEmpty() || s.length() < 6) {
+            _passwordText.setError("password needs to be more than 6 characters");
             return false;
         } else {
             _passwordText.setError(null);

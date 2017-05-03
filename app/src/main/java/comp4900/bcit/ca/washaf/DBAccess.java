@@ -20,7 +20,6 @@ import java.util.List;
 public class DBAccess {
 
     private static final String TAG = "DBAccess";
-    private static int nextUserId = 1;
     private static List<User> userList;
     private FirebaseDatabase database;
     private DatabaseReference mRef;
@@ -82,11 +81,9 @@ public class DBAccess {
         }
     }
 
-    public void writeUser(User user) {
-        String id = String.format("%08d", nextUserId);
-        Log.d(TAG, "ID is: " + id);
-        nextUserId++;
-        mRef.child(id).setValue(user);
+    public void writeUser(String uid, User user) {
+        Log.d(TAG, "ID is: " + uid);
+        mRef.child(uid).setValue(user);
     }
 
 
