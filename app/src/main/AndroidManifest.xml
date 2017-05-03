@@ -27,7 +27,8 @@
         <activity android:name=".userpage.TopAdminPage" />
         <activity android:name=".userpage.AdminPage" />
         <activity android:name=".userpage.EmployeePage" />
-        <activity android:name=".userpage.CustomerPage"></activity>
+        <activity android:name=".userpage.CustomerPage" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
