@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 import butterknife.ButterKnife;
 import butterknife.Bind;
@@ -110,14 +111,22 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:"
-                                + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                        // For testing purpose only
+//                        Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:"
+//                                + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.d(TAG, "sign up failed");
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(getApplicationContext(), "Login failed",
+                                    Toast.LENGTH_SHORT).show();
+
+                            if(task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(getApplicationContext(), "User with Email id already exists",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                             onSignupFailed();
                         } else {
                             Log.d(TAG, "sign up successful");

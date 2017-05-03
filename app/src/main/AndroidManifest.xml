@@ -14,6 +14,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDR90SBc5sH1gECO5M06h6B31DSj6Ko9To" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +23,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".TestPage"></activity>
+        <activity android:name=".TestPage" />
+        <activity android:name=".userpage.TopAdminPage" />
+        <activity android:name=".userpage.AdminPage" />
+        <activity android:name=".userpage.EmployeePage" />
+        <activity android:name=".userpage.CustomerPage"></activity>
     </application>
 
 </manifest>

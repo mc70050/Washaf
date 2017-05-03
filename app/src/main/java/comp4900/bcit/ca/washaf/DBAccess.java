@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
 public class DBAccess {
 
     private static final String TAG = "DBAccess";
-    private static List<User> userList;
+    private static HashMap<String,User> userList;
     private FirebaseDatabase database;
     private DatabaseReference mRef;
 
@@ -32,7 +33,7 @@ public class DBAccess {
         database = FirebaseDatabase.getInstance();
         mRef = database.getReference("user");
 
-        userList = new ArrayList<>();
+        userList = new HashMap<>();
         // Read from the database
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -43,7 +44,7 @@ public class DBAccess {
                 userList.clear();
                 for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
                     User user = snapShot.getValue(User.class);
-                    userList.add(user);
+                    userList.put(snapShot.getKey(), user);
                     Log.d(TAG, "user is " + user.getFirstName() + " " + user.getLastName());
                 }
                 Log.d(TAG, "there are " + userList.size() + " users");
@@ -84,6 +85,11 @@ public class DBAccess {
     public void writeUser(String uid, User user) {
         Log.d(TAG, "ID is: " + uid);
         mRef.child(uid).setValue(user);
+    }
+
+    public long getUserType(String uid) {
+        Log.d(TAG, "there are " + userList.size() + " users");
+        return userList.get(uid).getType();
     }
 
 
