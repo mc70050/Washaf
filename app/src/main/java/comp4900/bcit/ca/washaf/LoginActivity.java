@@ -19,6 +19,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private static final int REQUEST_RESET  = 0;
     private FirebaseAuth auth;
     private DBAccess db;
 
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.input_password)  EditText _passwordText;
     @Bind(R.id.btn_login)       Button   _loginButton;
     @Bind(R.id.link_signup)     TextView _signupLink;
+    @Bind(R.id.link_reset)      TextView _resetLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,15 @@ public class LoginActivity extends AppCompatActivity {
                 // Start the Signup activity
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
-                //finish();
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            }
+        });
+
+        _resetLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
+                startActivityForResult(intent, REQUEST_RESET);
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
