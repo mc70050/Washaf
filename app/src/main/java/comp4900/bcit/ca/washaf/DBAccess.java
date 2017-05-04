@@ -43,7 +43,6 @@ public class DBAccess {
                 for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
                     User user = snapShot.getValue(User.class);
                     userList.put(snapShot.getKey(), user);
-                    Log.d(TAG, "user is " + user.getFirstName() + " " + user.getLastName());
                 }
                 Log.d(TAG, "there are " + userList.size() + " users");
             }

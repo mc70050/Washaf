@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import comp4900.bcit.ca.washaf.R;
+import comp4900.bcit.ca.washaf.User;
 
 public class CustomerPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +43,8 @@ public class CustomerPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        User user = (User)getIntent().getSerializableExtra("user");
+        setTitle("Welcome, " + user.getFirstName() + " " + user.getLastName());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package comp4900.bcit.ca.washaf;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.util.Log;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
@@ -30,10 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private static final int REQUEST_RESET  = 0;
+    private static final String APP_NAME = "Washaf";
     private FirebaseAuth auth;
     private static DBAccess db;
+    private SharedPreferences preferences;
+    private ArrayList<String> emailList;
 
-    @Bind(R.id.input_email)     EditText _emailText;
+    @Bind(R.id.input_email)
+                                AutoCompleteTextView _emailText;
     @Bind(R.id.input_password)  EditText _passwordText;
     @Bind(R.id.btn_login)       Button   _loginButton;
     @Bind(R.id.link_signup)     TextView _signupLink;
@@ -44,7 +54,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        initializePreference();
         auth = FirebaseAuth.getInstance();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, emailList);
+        _emailText.setThreshold(1);
+        _emailText.setAdapter(adapter);
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -149,6 +163,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         FirebaseUser user = auth.getCurrentUser();
+        savePreference();
         goToUserPage(user.getUid());
         finish();
     }
@@ -230,5 +245,23 @@ public class LoginActivity extends AppCompatActivity {
             //restart this activity
 
         }
+    }
+
+    private void initializePreference() {
+        preferences = getSharedPreferences(APP_NAME, MODE_PRIVATE);
+        emailList = new ArrayList<String>(preferences.getStringSet("email", new HashSet<String>()));
+        Log.d("initialize", emailList.toString());
+    }
+
+    private void savePreference() {
+        SharedPreferences.Editor editor = preferences.edit();
+        String name = _emailText.getText().toString();
+        if(!(emailList.contains(name))){
+            //Adding input string into the name array-list
+            emailList.add(name) ;
+        }
+        editor.putStringSet("email", new HashSet<String>(emailList));
+        Log.d("save pref", emailList.toString());
+        editor.commit();
     }
 }
