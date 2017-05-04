@@ -28,7 +28,8 @@
         <activity android:name=".userpage.AdminPage" />
         <activity android:name=".userpage.EmployeePage" />
         <activity android:name=".userpage.CustomerPage" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

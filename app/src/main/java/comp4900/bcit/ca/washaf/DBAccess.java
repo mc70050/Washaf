@@ -8,9 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Michael Chen on 2017-05-01.
@@ -92,5 +90,7 @@ public class DBAccess {
         return userList.get(uid).getType();
     }
 
-
+    public User getUser(String uid) {
+        return userList.get(uid);
+    }
 }

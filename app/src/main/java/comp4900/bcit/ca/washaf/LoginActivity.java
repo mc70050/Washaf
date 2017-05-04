@@ -19,7 +19,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
 
 import butterknife.ButterKnife;
 import butterknife.Bind;
@@ -32,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     private static final int REQUEST_RESET  = 0;
     private FirebaseAuth auth;
-    private DBAccess db;
+    private static DBAccess db;
 
     @Bind(R.id.input_email)     EditText _emailText;
     @Bind(R.id.input_password)  EditText _passwordText;
@@ -107,9 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = auth.getCurrentUser();
                             progressDialog.dismiss();
-                            onLoginSuccess();
+                            checkIfEmailVerified();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -150,7 +148,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        goToUserPage();
+        FirebaseUser user = auth.getCurrentUser();
+        goToUserPage(user.getUid());
         finish();
     }
 
@@ -192,24 +191,44 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void goToUserPage() {
+    private void goToUserPage(String uid) {
         final UserType type = UserType.values()[(int)db.getUserType(auth.getCurrentUser().getUid())];
         switch (type) {
             case TOP_ADMIN:
-                startActivity(new Intent(getBaseContext(), TopAdminPage.class));
+                startActivity(new Intent(getBaseContext(), TopAdminPage.class).putExtra("user", db.getUser(uid)));
                 break;
             case ADMIN:
-                startActivity(new Intent(getBaseContext(), AdminPage.class));
+                startActivity(new Intent(getBaseContext(), AdminPage.class).putExtra("user", db.getUser(uid)));
                 break;
             case EMPLOYEE:
-                startActivity(new Intent(getBaseContext(), EmployeePage.class));
+                startActivity(new Intent(getBaseContext(), EmployeePage.class).putExtra("user", db.getUser(uid)));
                 break;
             case CUSTOMER:
-                startActivity(new Intent(getBaseContext(), CustomerPage.class));
+                startActivity(new Intent(getBaseContext(), CustomerPage.class).putExtra("user", db.getUser(uid)));
                 break;
             default:
                 Toast.makeText(getBaseContext(), "User information type error", Toast.LENGTH_LONG).show();
                 break;
+        }
+    }
+
+    private void checkIfEmailVerified()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user.isEmailVerified())
+        {
+            // user is verified, so you can finish this activity or send user to activity which you want.
+            onLoginSuccess();
+        }
+        else
+        {
+            // email is not verified, so just prompt the message to the user and restart this activity.
+            // NOTE: don't forget to log out the user.
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(getBaseContext(), "Email verification not verified yet", Toast.LENGTH_LONG).show();
+            //restart this activity
+
         }
     }
 }

@@ -1,5 +1,7 @@
 package comp4900.bcit.ca.washaf;
 
+import java.io.Serializable;
+
 /**
  * Created by Michael on 2017-04-28.
  * Represents all potential users of this app. This includes:
@@ -9,7 +11,7 @@ package comp4900.bcit.ca.washaf;
  * 4. Customer, who uses the services of the laundromats
  */
 
-public class User {
+public class User implements Serializable {
 
     private String  firstName;
     private String  lastName;
