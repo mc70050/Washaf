@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Washaf</string>
+    <string name="title_activity_admin_page">AdminPage</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_customer_page">CustomerPage</string>
+    <string name="title_activity_employee_page">EmployeePage</string>
+    <string name="title_activity_top_admin_page">TopAdminPage</string>
 </resources>

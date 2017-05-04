@@ -24,12 +24,24 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".TestPage" />
-        <activity android:name=".userpage.TopAdminPage" />
-        <activity android:name=".userpage.AdminPage" />
-        <activity android:name=".userpage.EmployeePage" />
-        <activity android:name=".userpage.CustomerPage" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" />
+        <activity
+            android:name=".userpage.AdminPage"
+            android:label="@string/title_activity_admin_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".userpage.CustomerPage"
+            android:label="@string/title_activity_customer_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".userpage.EmployeePage"
+            android:label="@string/title_activity_employee_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".userpage.TopAdminPage"
+            android:label="@string/title_activity_top_admin_page"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
