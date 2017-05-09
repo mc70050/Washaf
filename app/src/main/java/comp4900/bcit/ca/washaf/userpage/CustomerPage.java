@@ -1,8 +1,11 @@
 package comp4900.bcit.ca.washaf.userpage;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +15,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerMainFrag;
 
 public class CustomerPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +52,9 @@ public class CustomerPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        User user = (User)getIntent().getSerializableExtra("user");
+        user = (User)getIntent().getSerializableExtra("user");
         setTitle("Welcome, " + user.getFirstName() + " " + user.getLastName());
+        loadMain();
     }
 
     @Override
@@ -85,18 +95,46 @@ public class CustomerPage extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_order) {
+        if (id == R.id.nav_main) {
+            Log.d("Navi", "clicked main");
+            loadMain();
+        } else if (id == R.id.nav_order) {
             // Handle the camera action
+            Log.d("Navi", "clicked order");
         } else if (id == R.id.nav_logout) {
-
+            Log.d("Navi", "clicked logout");
+            Toast.makeText(getBaseContext(), "You have been successfully logged out.", Toast.LENGTH_LONG).show();
+            FirebaseAuth.getInstance().signOut();
+            finish();
         } else if (id == R.id.nav_account) {
-
-        } else if (id == R.id.nav_logout) {
-
+            Log.d("Navi", "clicked account");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private Bundle saveDataToFragment() {
+        Bundle bun = new Bundle();
+        bun.putSerializable("user", user);
+        return bun;
+    }
+
+    private void loadMain() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        CustomerMainFrag f = (CustomerMainFrag) fm.findFragmentByTag("tag");
+
+        if(f == null) {  // not added
+            f = new CustomerMainFrag();
+            f.setArguments(saveDataToFragment());
+            ft.add(R.id.customer_content, f, "tag");
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        } else {  // already added
+        }
+
+        ft.commit();
     }
 }

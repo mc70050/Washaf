@@ -20,8 +20,11 @@ public class DBAccess {
 
     private static final String TAG = "DBAccess";
     private static HashMap<String,User> userList;
+    private static HashMap<String,CurrentOrder> curOrderList;
     private FirebaseDatabase database;
-    private DatabaseReference mRef;
+    private DatabaseReference userRef;
+    private DatabaseReference groupRef;
+    private DatabaseReference curOrderRef;
 
     /**
      * Default constructor.
@@ -29,11 +32,10 @@ public class DBAccess {
      */
     public DBAccess() {
         database = FirebaseDatabase.getInstance();
-        mRef = database.getReference("user");
-
+        userRef = database.getReference("user");
         userList = new HashMap<>();
         // Read from the database
-        mRef.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("DATA CHANGE", "activated");
@@ -53,6 +55,44 @@ public class DBAccess {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
+        groupRef = database.getReference("group");
+        groupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("DATA CHANGE", "group");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    public void getCurrentOrderInfo() {
+        curOrderList = new HashMap<>();
+        curOrderRef = database.getReference("current order");
+        curOrderRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("DATA CHANGE", "current order");
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                curOrderList.clear();
+                for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
+                    CurrentOrder order = snapShot.getValue(CurrentOrder.class);
+                    curOrderList.put(snapShot.getKey(), order);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     /**
@@ -60,28 +100,29 @@ public class DBAccess {
      * @param reference name of reference
      */
     public void getRef(String reference) {
-        mRef = database.getReference(reference);
-    }
-
-    /**
-     * Attempts to write data into the database.
-     * @param content that will be written into the database
-     * @return true if successful in writing data
-     *         false if attempt failed
-     */
-    public boolean writeData(String content) {
-        if (mRef != null) {
-            mRef.setValue(content);
-            return true;
-        } else {
-            Log.d(TAG, "Need to get reference first");
-            return false;
-        }
+        userRef = database.getReference(reference);
     }
 
     public void writeUser(String uid, User user) {
         Log.d(TAG, "ID is: " + uid);
-        mRef.child(uid).setValue(user);
+        userRef.child(uid).setValue(user);
+    }
+
+    public void writeUserToGroup(String uid, User user) {
+        if (user.getType() == UserType.CUSTOMER.ordinal()) {
+            groupRef.child("customer").child(uid).setValue(user);
+        } else if (user.getType() == UserType.EMPLOYEE.ordinal()) {
+            groupRef.child("employee").child(uid).setValue(user);
+        } else if (user.getType() == UserType.ADMIN.ordinal()) {
+            groupRef.child("admin").child(uid).setValue(user);
+        } else if (user.getType() == UserType.TOP_ADMIN.ordinal()) {
+            groupRef.child("top admin").child(uid).setValue(user);
+        }
+    }
+
+    public void writeNewOrder(String uid, CurrentOrder order) {
+        Log.d(TAG, "order is for " + uid);
+        curOrderRef.child(uid).setValue(order);
     }
 
     public long getUserType(String uid) {

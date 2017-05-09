@@ -19,6 +19,8 @@ public class User implements Serializable {
     private String  email;
     private String  phoneNum;
     private long    type;
+    private long    numOfBags;
+    private String  associatedStoreUid;
 
     /**
      * Default constructor
@@ -46,6 +48,7 @@ public class User implements Serializable {
         setAddress(address);
         setPhoneNum(phoneNum);
         setType(type);
+        setNumOfBags(0);
     }
 
     // Start of all getters and setters
@@ -63,6 +66,8 @@ public class User implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = formatNames(lastName);
     }
+
+    public String getFullName() { return (getFirstName() + " " + getLastName()); }
 
     public String getAddress() {
         return address;
@@ -96,6 +101,10 @@ public class User implements Serializable {
         this.type = type;
     }
 
+    public void setNumOfBags(long num) { numOfBags = num; }
+
+    public long getNumOfBags() { return numOfBags; }
+
     // End of all setters and getters
 
     // Four functions for checking user type
@@ -122,5 +131,13 @@ public class User implements Serializable {
 
     private String formatPhone(String s) {
         return s.substring(0,3) + "-" + s.substring(3,6) + "-" + s.substring(6);
+    }
+
+    public String getAssociatedStoreUid() {
+        return associatedStoreUid;
+    }
+
+    public void setAssociatedStoreUid(String associatedStoreUid) {
+        this.associatedStoreUid = associatedStoreUid;
     }
 }
