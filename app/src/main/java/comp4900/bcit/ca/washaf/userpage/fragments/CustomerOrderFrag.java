@@ -26,6 +26,11 @@ import comp4900.bcit.ca.washaf.R;
 
 public class CustomerOrderFrag extends Fragment {
     private static final String TAG = "CustomerOrderFrag";
+    private static final String TITLE = "Your Order Information";
+    private static final String SERVICE = "Service: ";
+    private static final String REQUESTED_TIME = "Requested Time: ";
+    private static final String COMPLETED_TIME = "Completed Time: ";
+    private static final String STATUS         = "Status: ";
 
     private Activity mActivity;
     private static FirebaseDatabase db;
@@ -46,6 +51,7 @@ public class CustomerOrderFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.customer_order_frag, container, false);
+        getActivity().setTitle(TITLE);
         db = FirebaseDatabase.getInstance();
         currentOrders = (ListView) view.findViewById(R.id.current_orders);
         auth = FirebaseAuth.getInstance().getCurrentUser();
@@ -54,8 +60,9 @@ public class CustomerOrderFrag extends Fragment {
                 CurrentOrder.class, R.layout.cust_current_order_process, curOrderRef) {
             @Override
             protected void populateView(View v, CurrentOrder model, int position) {
-                ((TextView) v.findViewById(android.R.id.text1)).setText(model.getServiceType());
-                ((TextView) v.findViewById(android.R.id.text2)).setText(model.getRequestedTime());
+                ((TextView) v.findViewById(R.id.text1)).setText(SERVICE + model.getServiceType());
+                ((TextView) v.findViewById(R.id.text2)).setText(REQUESTED_TIME + model.getRequestedTime());
+                ((TextView) v.findViewById(R.id.text3)).setText(STATUS + model.getStatus().toString());
             }
         };
         currentOrders.setAdapter(adapter);

@@ -33,6 +33,7 @@ import comp4900.bcit.ca.washaf.User;
 
 public class CustomerMainFrag extends Fragment {
     private final String TAG = "CustomerMainFrag";
+    private static final String TITLE = "Place Orders Here";
 
     private Activity mActivity;
     private static Spinner spin;
@@ -55,6 +56,7 @@ public class CustomerMainFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View view = inflater.inflate(R.layout.customer_main_frag, container, false);
+        getActivity().setTitle(TITLE);
         db = new DBAccess();
         user = (User)getArguments().getSerializable("user");
         auth = FirebaseAuth.getInstance().getCurrentUser();

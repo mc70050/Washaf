@@ -15,6 +15,7 @@ public class CurrentOrder implements Serializable {
     private String requestedTime;
     private long   quantity;
     private long   price;
+    private OrderStatus status;
 
     private static final long WASHAF_PRICE = 35;
     private static final long BAG_PRICE = 10;
@@ -32,6 +33,7 @@ public class CurrentOrder implements Serializable {
         this.requestedTime = requestedTime;
         this.quantity = quantity;
         setPrice(serviceType, quantity);
+        setStatus(OrderStatus.REQUESTED);
     }
 
     private void setPrice(String serviceType, long quantity) {
@@ -104,5 +106,13 @@ public class CurrentOrder implements Serializable {
 
     public void setPrice(long price) {
         this.price = price;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }
