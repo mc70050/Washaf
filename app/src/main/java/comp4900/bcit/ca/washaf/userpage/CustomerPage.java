@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerMainFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
 
@@ -116,6 +117,7 @@ public class CustomerPage extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_account) {
             Log.d("Navi", "clicked account");
+            loadAccount();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -157,6 +159,25 @@ public class CustomerPage extends AppCompatActivity
         } else if (!(fm.findFragmentByTag("tag") instanceof CustomerOrderFrag)) {
             Log.d("loadOrder", "fragment is not main");
             CustomerOrderFrag f = new CustomerOrderFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {
+
+        }
+
+        ft.commit();
+    }
+
+    private void loadAccount() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            CustomerAccountFrag f = new CustomerAccountFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerAccountFrag)) {
+            Log.d("loadOrder", "fragment is not main");
+            CustomerAccountFrag f = new CustomerAccountFrag();
             f.setArguments(saveDataToFragment());
             ft.replace(R.id.customer_content, f, "tag");
         } else {

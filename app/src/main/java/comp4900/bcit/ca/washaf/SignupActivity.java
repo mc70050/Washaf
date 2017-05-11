@@ -151,7 +151,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void saveUser(String uid, String fName, String lName, String email, String phone, String address) {
         DBAccess db = new DBAccess();
-        User user = new User(fName, lName, address, email, phone, UserType.CUSTOMER.ordinal());
+        User user = new User(fName, lName, address, email, phone, UserType.EMPLOYEE.ordinal());
         db.writeUser(uid, user);
         db.writeUserToGroup(uid, user);
     }
