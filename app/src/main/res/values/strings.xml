@@ -9,4 +9,13 @@
     <string name="title_activity_customer_page">CustomerPage</string>
     <string name="title_activity_employee_page">EmployeePage</string>
     <string name="title_activity_top_admin_page">TopAdminPage</string>
+
+    <string name="order_confirmation_title">Order Confirmation</string>
+    <string name="order_confirmation_content">Please confirm that you want to send this request</string>
+
+    <string name="order_confirmation_ok">Confirmed</string>
+    <string name="order_confirmation_cancel">Canecel</string>
+
+    <string name="order_sent_title">Thank you!</string>
+    <string name="order_sent_content">Thank you for placing an order, We will start working on it as soon as we can</string>
 </resources>

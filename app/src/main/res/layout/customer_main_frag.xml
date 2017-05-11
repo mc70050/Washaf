@@ -46,10 +46,28 @@
         </Spinner>
         <Button
             android:id="@+id/order_button"
-            android:layout_marginLeft="60dp"
+            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Click to request for service"/>
+        <TextView
+            android:id="@+id/orderBagTag"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please click to choose number of bags"/>
+        <Spinner
+            android:id="@+id/request_bag_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ccc"
+            android:popupBackground="#ccc"/>
+        <Button
+            android:id="@+id/order_bag_button"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click to request for bags"/>
 
     </LinearLayout>
 </ScrollView>

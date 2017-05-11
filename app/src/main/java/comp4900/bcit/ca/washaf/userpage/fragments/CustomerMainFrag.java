@@ -1,8 +1,13 @@
 package comp4900.bcit.ca.washaf.userpage.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +35,13 @@ public class CustomerMainFrag extends Fragment {
     private final String TAG = "CustomerMainFrag";
 
     private Activity mActivity;
-    private Spinner spin;
-    private Button orderButton;
-    private User user;
-    private DBAccess db;
+    private static Spinner spin;
+    private static Spinner bagRequestSpin;
+    private static Button orderButton;
+    private static Button orderBagButton;
+    private static User user;
+    private static DBAccess db;
+    private static FirebaseUser auth;
 
     @Override
     public void onAttach(Activity act)
@@ -48,16 +56,17 @@ public class CustomerMainFrag extends Fragment {
     {
         final View view = inflater.inflate(R.layout.customer_main_frag, container, false);
         db = new DBAccess();
-        db.getCurrentOrderInfo();
         user = (User)getArguments().getSerializable("user");
-        final FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        auth = FirebaseAuth.getInstance().getCurrentUser();
 
         //do whatever you want here - like set text to display in your fragment
         spin = (Spinner) view.findViewById(R.id.bag_number);
+        bagRequestSpin = (Spinner) view.findViewById(R.id.request_bag_number);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.bag_number_array,
                 android.R.layout.simple_list_item_1);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapter);
+        bagRequestSpin.setAdapter(adapter);
         orderButton = (Button) view.findViewById(R.id.order_button);
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,16 +75,85 @@ public class CustomerMainFrag extends Fragment {
                 if (Integer.parseInt(spin.getSelectedItem().toString()) > user.getNumOfBags()) {
                     Toast.makeText(view.getContext(), "You don't have this many bags", Toast.LENGTH_LONG).show();
                 } else {
-                    db.writeNewOrder(auth.getUid(), new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
-                                                                     user.getEmail(), orderButton.getText().toString(), currentDateTime,
-                                                                     Long.parseLong(spin.getSelectedItem().toString())
-                                                                     ));
+                    ServiceRequestDialog dialog = new ServiceRequestDialog();
+                    dialog.show(getFragmentManager(), "service request");
                 }
+            }
+        });
+        orderBagButton = (Button) view.findViewById(R.id.order_bag_button);
+        orderBagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BagRequestDialog dialog = new BagRequestDialog();
+                dialog.show(getFragmentManager(), "bag request");
             }
         });
 
         return view;
     }
 
+    public static class BagRequestDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.order_confirmation_content).setTitle(R.string.order_confirmation_title);
+            builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
+                    db.writeNewOrder(auth.getUid(), new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
+                            user.getEmail(), "request for bag", currentDateTime,
+                            Long.parseLong(bagRequestSpin.getSelectedItem().toString())
+                    ));
+                    OrderSentDialog message = new OrderSentDialog();
+                    message.show(getFragmentManager(), "thank you message");
+                }
+            });
+            builder.setNegativeButton(R.string.order_confirmation_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+            AlertDialog message = builder.create();
+            return message;
+        }
+    }
 
+    public static class ServiceRequestDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.order_confirmation_content).setTitle(R.string.order_confirmation_title);
+            builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
+                    db.writeNewOrder(auth.getUid(), new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
+                            user.getEmail(), orderButton.getText().toString(), currentDateTime,
+                            Long.parseLong(spin.getSelectedItem().toString())
+                    ));
+                    OrderSentDialog message = new OrderSentDialog();
+                    message.show(getFragmentManager(), "thank you message");
+                }
+            });
+            builder.setNegativeButton(R.string.order_confirmation_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+            AlertDialog message = builder.create();
+            return message;
+        }
+    }
+
+    public static class OrderSentDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.order_sent_content).setTitle(R.string.order_sent_title);
+            AlertDialog message = builder.create();
+            return message;
+        }
+    }
 }

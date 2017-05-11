@@ -71,19 +71,21 @@ public class DBAccess {
         });
     }
 
-    public void getCurrentOrderInfo() {
+    public void getCurrentOrderInfoForCustomer(String uid) {
         curOrderList = new HashMap<>();
-        curOrderRef = database.getReference("current order");
+        curOrderRef = database.getReference("current order").child(uid);
         curOrderRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("DATA CHANGE", "current order");
+                Log.d("current Order", dataSnapshot.getChildrenCount() + "");
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 curOrderList.clear();
                 for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
                     CurrentOrder order = snapShot.getValue(CurrentOrder.class);
                     curOrderList.put(snapShot.getKey(), order);
+                    Log.d("current Order", curOrderList.toString());
                 }
             }
 
@@ -121,8 +123,9 @@ public class DBAccess {
     }
 
     public void writeNewOrder(String uid, CurrentOrder order) {
-        Log.d(TAG, "order is for " + uid);
-        curOrderRef.child(uid).setValue(order);
+        curOrderRef = database.getReference("current order");
+        Log.d(TAG, "order is for " + order.getServiceType());
+        curOrderRef.child(uid).child(order.getRequestedTime()).setValue(order);
     }
 
     public long getUserType(String uid) {
@@ -132,5 +135,9 @@ public class DBAccess {
 
     public User getUser(String uid) {
         return userList.get(uid);
+    }
+
+    public HashMap<String, CurrentOrder> getCustomerCurrentOrders() {
+        return curOrderList;
     }
 }
