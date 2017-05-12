@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="comp4900.bcit.ca.washaf.userpage.OrderActivity">
+
+    <TextView
+        android:id="@+id/choose_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="16dp"
+        android:text="1. Please choose your service" />
+
+    <RadioGroup
+        android:id="@+id/auton_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/choose_service"
+        android:layout_alignStart="@+id/choose_service">
+
+        <RadioButton
+            android:id="@+id/washaf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="30dp"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/request_bag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"/>
+
+
+        </RadioGroup>
+
+    <TextView
+        android:id="@+id/washaf_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="Wash And Fold"
+        android:layout_below="@+id/auton_bar"
+        android:layout_alignStart="@+id/auton_bar"
+        android:layout_marginStart="11dp" />
+
+    <TextView
+        android:id="@+id/request_bag_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request Bag"
+        android:layout_alignBaseline="@+id/washaf_text"
+        android:layout_alignBottom="@+id/washaf_text"
+        android:layout_toEndOf="@+id/choose_service"
+        android:layout_marginStart="13dp" />
+
+    <TextView
+        android:id="@+id/choose_quantity_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/auton_bar"
+        android:layout_below="@+id/washaf_text"
+        android:layout_marginTop="29dp"
+        android:text="2. Please choose quantity" />
+
+
+</RelativeLayout>
