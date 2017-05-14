@@ -62,7 +62,7 @@ public class CustomerPage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         user = (User)getIntent().getSerializableExtra("user");
         setTitle("Welcome, " + user.getFirstName() + " " + user.getLastName());
-        loadMain();
+        loadOrder();
     }
 
     @Override

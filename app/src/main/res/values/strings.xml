@@ -18,4 +18,6 @@
 
     <string name="order_sent_title">Thank you!</string>
     <string name="order_sent_content">Thank you for placing an order, We will start working on it as soon as we can</string>
+
+    <string name="choose_pickup_day">Please choose a day for pick up or drop off by clicking the icon on the left</string>
 </resources>

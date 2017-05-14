@@ -2,10 +2,12 @@ package comp4900.bcit.ca.washaf.userpage.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import java.util.HashMap;
 
 import comp4900.bcit.ca.washaf.CurrentOrder;
 import comp4900.bcit.ca.washaf.R;
+import comp4900.bcit.ca.washaf.userpage.OrderActivity;
 
 /**
  * Created by Michael on 2017-05-09.
@@ -67,6 +70,14 @@ public class CustomerOrderFrag extends Fragment {
         };
         currentOrders.setAdapter(adapter);
 
+        Button order = (Button) view.findViewById(R.id.order_button);
+        order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(view.getContext(), OrderActivity.class));
+                getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            }
+        });
 
 
 

@@ -16,7 +16,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDR90SBc5sH1gECO5M06h6B31DSj6Ko9To" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +25,8 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".TestPage" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".userpage.OrderActivity"/>
         <activity
             android:name=".userpage.AdminPage"
             android:label="@string/title_activity_admin_page"
