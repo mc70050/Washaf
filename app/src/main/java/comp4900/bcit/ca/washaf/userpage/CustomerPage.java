@@ -72,6 +72,8 @@ public class CustomerPage extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            FirebaseAuth.getInstance().signOut();
+            finish();
         }
     }
 

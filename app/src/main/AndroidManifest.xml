@@ -26,7 +26,7 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".TestPage" />
         <activity android:name=".ResetPasswordActivity" />
-        <activity android:name=".userpage.OrderActivity"/>
+        <activity android:name=".userpage.fragments.OrderFrag" />
         <activity
             android:name=".userpage.AdminPage"
             android:label="@string/title_activity_admin_page"
@@ -43,7 +43,12 @@
             android:name=".userpage.TopAdminPage"
             android:label="@string/title_activity_top_admin_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".userpage.Chatbox"></activity>
+        <activity android:name=".userpage.Chatbox" />
+        <activity
+            android:name=".userpage.OrderPage"
+            android:label="@string/title_activity_order_page"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

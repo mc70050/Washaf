@@ -23,7 +23,7 @@ import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
-import comp4900.bcit.ca.washaf.userpage.fragments.OrderActivity;
+import comp4900.bcit.ca.washaf.userpage.fragments.OrderFrag;
 
 public class OrderPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -166,12 +166,12 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (fm.findFragmentByTag("tag") == null) {
-            OrderActivity f = new OrderActivity();
+            OrderFrag f = new OrderFrag();
             f.setArguments(saveDataToFragment());
             ft.replace(R.id.customer_content, f, "tag");
         } else if (!(fm.findFragmentByTag("tag") instanceof CustomerAccountFrag)) {
             Log.d("loadOrder", "fragment is not main");
-            OrderActivity f = new OrderActivity();
+            OrderFrag f = new OrderFrag();
             f.setArguments(saveDataToFragment());
             ft.replace(R.id.customer_content, f, "tag");
         } else {

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="comp4900.bcit.ca.washaf.userpage.fragments.OrderFrag">
+
+    <TextView
+        android:id="@+id/choose_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="10dp"
+        android:text="1. Please choose your service"
+        tools:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/service_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/choose_service"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:id="@+id/washaf"
+            android:button="@drawable/custom_radio"
+            android:paddingLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Wash And Fold" />
+
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/choose_pickup_dropoff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_marginStart="10dp"
+        android:text="2. Please choose pick up service or drop off"
+        tools:textStyle="bold"
+        android:layout_below="@+id/service_group"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/choose_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/choose_pickup_dropoff"
+        android:layout_below="@+id/choose_time_icon"
+        android:layout_marginTop="17dp"
+        android:text="3. Please choose quantity of order"
+        tools:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/choose_delievery_pickup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/choose_quantity"
+        android:layout_below="@+id/spinner"
+        android:text="4. Please choose delivery service or pick up"
+        tools:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:layout_below="@+id/choose_pickup_dropoff"
+        android:layout_alignParentEnd="true">
+
+        <RadioButton
+            android:id="@+id/pick_up"
+            android:button="@drawable/custom_radio"
+            android:paddingLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Pick up" />
+
+        <RadioButton
+            android:id="@+id/drop_off"
+            android:button="@drawable/custom_radio"
+            android:paddingLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:text="Drop off" />
+    </RadioGroup>
+
+    <ImageView
+        android:src="@drawable/icon_schedule"
+        android:background="@drawable/cell_shape"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/choose_day_icon"
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/choose_day_icon2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/cell_shape"
+        android:src="@drawable/icon_schedule"
+        android:layout_below="@+id/radioGroup2"
+        android:layout_toStartOf="@+id/quantity_unit" />
+
+    <ImageView
+        android:id="@+id/choose_time_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/choose_day_icon"
+        android:layout_below="@+id/choose_day_icon"
+        android:background="@drawable/cell_shape"
+        android:src="@drawable/clock2" />
+
+    <ImageView
+        android:id="@+id/choose_time_icon2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/choose_day_icon2"
+        android:layout_below="@+id/choose_day_icon2"
+        android:background="@drawable/cell_shape"
+        android:src="@drawable/clock2" />
+
+    <TextView
+        android:id="@+id/choose_day_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/cell_shape"
+        android:padding="5dp"
+        android:hint="@string/choose_pickup_day"
+        android:layout_alignTop="@+id/choose_day_icon"
+        android:layout_toEndOf="@+id/choose_day_icon"
+        android:layout_alignBottom="@+id/choose_day_icon" />
+
+    <TextView
+        android:id="@+id/choose_day_text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/choose_day_icon2"
+        android:layout_marginRight="20dp"
+        android:layout_toEndOf="@+id/choose_day_icon2"
+        android:background="@drawable/cell_shape"
+        android:gravity="center_vertical"
+        android:hint="@string/choose_pickup_day2"
+        android:padding="5dp"
+        android:layout_above="@+id/choose_time_icon2" />
+
+    <TextView
+        android:id="@+id/choose_time_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/choose_time_icon"
+        android:layout_below="@+id/choose_day_icon"
+        android:layout_marginRight="20dp"
+        android:layout_toEndOf="@+id/choose_time_icon"
+        android:background="@drawable/cell_shape"
+        android:gravity="center_vertical"
+        android:hint="@string/choose_pickup_time"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/choose_time_text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/choose_time_icon2"
+        android:layout_below="@+id/choose_day_icon2"
+        android:layout_marginRight="20dp"
+        android:layout_toEndOf="@+id/choose_time_icon2"
+        android:background="@drawable/cell_shape"
+        android:gravity="center_vertical"
+        android:hint="@string/choose_pickup_time2"
+        android:padding="5dp" />
+
+    <Button android:id="@+id/next_button"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Next >>"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/choose_time_icon2" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/spinner_style"
+        android:layout_below="@+id/choose_quantity"
+        android:layout_alignStart="@+id/choose_time_icon"
+        android:layout_marginTop="11dp" />
+
+    <TextView
+        android:id="@+id/quantity_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:text="Bag"
+        android:gravity="center"
+        android:layout_alignTop="@+id/spinner"
+        android:layout_toEndOf="@+id/choose_time_icon"
+        android:layout_alignBottom="@+id/spinner" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:layout_below="@+id/choose_delievery_pickup"
+        android:layout_alignParentEnd="true">
+
+        <RadioButton
+            android:id="@+id/pick_up2"
+            android:button="@drawable/custom_radio"
+            android:paddingLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Pick up" />
+
+        <RadioButton
+            android:id="@+id/delivery"
+            android:button="@drawable/custom_radio"
+            android:paddingLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:text="Delivery" />
+    </RadioGroup>
+
+</RelativeLayout>
+    </ScrollView>

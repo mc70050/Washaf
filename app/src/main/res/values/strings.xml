@@ -9,6 +9,7 @@
     <string name="title_activity_customer_page">CustomerPage</string>
     <string name="title_activity_employee_page">EmployeePage</string>
     <string name="title_activity_top_admin_page">TopAdminPage</string>
+    <string name="title_activity_order_page">Order Page</string>
 
     <string name="order_confirmation_title">Order Confirmation</string>
     <string name="order_confirmation_content">Please confirm that you want to send this request</string>
@@ -20,4 +21,8 @@
     <string name="order_sent_content">Thank you for placing an order, We will start working on it as soon as we can</string>
 
     <string name="choose_pickup_day">Please choose a day for pick up or drop off by clicking the icon on the left</string>
+    <string name="choose_pickup_time">Please choose a time for pick up or drop off by clicking the icon on the left</string>
+
+    <string name="choose_pickup_day2">Please choose a day for delivery or pick up by clicking the icon on the left</string>
+    <string name="choose_pickup_time2">Please choose a time for delivery or pick up by clicking the icon on the left</string>
 </resources>

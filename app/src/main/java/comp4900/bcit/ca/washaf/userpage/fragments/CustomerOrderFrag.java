@@ -21,7 +21,8 @@ import java.util.HashMap;
 
 import comp4900.bcit.ca.washaf.CurrentOrder;
 import comp4900.bcit.ca.washaf.R;
-import comp4900.bcit.ca.washaf.userpage.OrderActivity;
+import comp4900.bcit.ca.washaf.User;
+import comp4900.bcit.ca.washaf.userpage.OrderPage;
 
 /**
  * Created by Michael on 2017-05-09.
@@ -74,7 +75,9 @@ public class CustomerOrderFrag extends Fragment {
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(view.getContext(), OrderActivity.class));
+                Intent intent = new Intent(view.getContext(), OrderPage.class);
+                intent.putExtra("user", getArguments().getSerializable("user"));
+                startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });

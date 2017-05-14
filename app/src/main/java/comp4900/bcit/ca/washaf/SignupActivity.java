@@ -78,7 +78,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void test() {
         Log.d(TAG, "test in progress");
-        saveUser("UID", "Robert", "Chen", "mc700@gmail.com", "6048082829", "Dubai");
+        saveUser("UID2", "Employee1", "Test", "mc700@gmail.com", "6048082829", "Dubai");
     }
 
     /**
