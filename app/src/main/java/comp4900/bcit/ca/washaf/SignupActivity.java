@@ -2,6 +2,8 @@ package comp4900.bcit.ca.washaf;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,18 +22,31 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+    private static final double SERVICE_RANGE = 5;
+
+    private HashMap<String, User> admins;
 
 
     @Bind(R.id.atv_places)          TextView _addressText;
@@ -72,6 +87,8 @@ public class SignupActivity extends AppCompatActivity {
                 test();
             }
         });
+        admins = new HashMap<>();
+        getAdmins();
 
         setTextWatcher();
     }
@@ -151,9 +168,74 @@ public class SignupActivity extends AppCompatActivity {
 
     private void saveUser(String uid, String fName, String lName, String email, String phone, String address) {
         DBAccess db = new DBAccess();
-        User user = new User(fName, lName, address, email, phone, UserType.EMPLOYEE.ordinal());
+        String id = findNearestStoreId(address);
+        User user = new User(fName, lName, address, email, phone, UserType.CUSTOMER.ordinal(), (!id.isEmpty()) ? id : "");
+        if (id.isEmpty()) {
+            Toast.makeText(this, "Please contact Sahil through message system to be put under a store, sorry for the " +
+            "inconvenience", Toast.LENGTH_LONG).show();
+        }
         db.writeUser(uid, user);
         db.writeUserToGroup(uid, user);
+    }
+
+    private String findNearestStoreId(String newUserAddress) {
+        String id = "";
+        double nearestDist = SERVICE_RANGE;
+        double tempDist;
+        for (String key : admins.keySet()) {
+            if ((tempDist = DistanceCalculator.CalculationByDistance(getLocationFromAddress(newUserAddress),
+                                                         getLocationFromAddress(admins.get(key).getAddress()))) < nearestDist) {
+                id = key;
+                nearestDist = tempDist;
+            }
+        }
+        return id;
+    }
+
+    private LatLng getLocationFromAddress(String strAddress) {
+
+        Geocoder coder = new Geocoder(this, Locale.getDefault());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+
+            return p1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return p1;
+    }
+
+    private void getAdmins() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference adminRef = db.getReference("group").child("admin");
+        adminRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("DATA CHANGE", "get admin info");
+                for ( DataSnapshot snap : dataSnapshot.getChildren()) {
+                    User user = snap.getValue(User.class);
+                    admins.put(snap.getKey(), user);
+                }
+                Log.d("findNearestStore", "there are " + admins.size() + " admins");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     public void onSignupFailed() {

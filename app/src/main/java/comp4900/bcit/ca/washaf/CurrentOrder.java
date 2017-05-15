@@ -13,6 +13,13 @@ public class CurrentOrder implements Serializable {
     private String email;
     private String serviceType;
     private String requestedTime;
+    private String pickup_type;
+    private String pickup_day;
+    private String pickup_time;
+    private String delivery_type;
+    private String delivery_day;
+    private String delivery_time;
+    private String delivery_address;
     private long   quantity;
     private long   price;
     private OrderStatus status;
@@ -24,7 +31,8 @@ public class CurrentOrder implements Serializable {
 
     }
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
-                        long quantity) {
+                        long quantity, String pickup_type, String pickup_day, String pickup_time, String delivery_type,
+                        String delivery_day, String delivery_time) {
         customerName = name;
         this.address = address;
         this.phone = phone;
@@ -33,6 +41,33 @@ public class CurrentOrder implements Serializable {
         this.requestedTime = requestedTime;
         this.quantity = quantity;
         setPrice(serviceType, quantity);
+        setPickup_type(pickup_type);
+        setPickup_day(pickup_day);
+        setPickup_time(pickup_time);
+        setDelivery_type(delivery_type);
+        setDelivery_day(delivery_day);
+        setDelivery_time(delivery_time);
+        setStatus(OrderStatus.REQUESTED);
+    }
+
+    public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
+                        long quantity, String pickup_type, String pickup_day, String pickup_time, String delivery_type,
+                        String delivery_day, String delivery_time, String delivery_address) {
+        customerName = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.serviceType = serviceType;
+        this.requestedTime = requestedTime;
+        this.quantity = quantity;
+        setPrice(serviceType, quantity);
+        setPickup_type(pickup_type);
+        setPickup_day(pickup_day);
+        setPickup_time(pickup_time);
+        setDelivery_type(delivery_type);
+        setDelivery_day(delivery_day);
+        setDelivery_time(delivery_time);
+        setDelivery_address(delivery_address);
         setStatus(OrderStatus.REQUESTED);
     }
 
@@ -114,5 +149,61 @@ public class CurrentOrder implements Serializable {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public String getPickup_type() {
+        return pickup_type;
+    }
+
+    public void setPickup_type(String service_type) {
+        this.pickup_type = service_type;
+    }
+
+    public String getPickup_day() {
+        return pickup_day;
+    }
+
+    public void setPickup_day(String pickup_day) {
+        this.pickup_day = pickup_day;
+    }
+
+    public String getPickup_time() {
+        return pickup_time;
+    }
+
+    public void setPickup_time(String pickup_time) {
+        this.pickup_time = pickup_time;
+    }
+
+    public String getDelivery_type() {
+        return delivery_type;
+    }
+
+    public void setDelivery_type(String delivery_type) {
+        this.delivery_type = delivery_type;
+    }
+
+    public String getDelivery_day() {
+        return delivery_day;
+    }
+
+    public void setDelivery_day(String delivery_day) {
+        this.delivery_day = delivery_day;
+    }
+
+    public String getDelivery_time() {
+        return delivery_time;
+    }
+
+    public void setDelivery_time(String delivery_time) {
+        this.delivery_time = delivery_time;
+    }
+
+    public String getDelivery_address() {
+        return delivery_address;
+    }
+
+    public void setDelivery_address(String delivery_address) {
+        this.delivery_address = delivery_address;
     }
 }

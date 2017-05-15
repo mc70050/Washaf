@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Michael on 2017-05-08.
@@ -18,14 +19,12 @@ import java.util.List;
 
 public class DistanceCalculator {
 
-    public static double CalculationByDistance(String startAddress, String endAddress, Context context) {
-        LatLng startP = getLocationFromAddress(context, startAddress);
-        LatLng endP = getLocationFromAddress(context, endAddress);
+    public static double CalculationByDistance(LatLng startAddress, LatLng endAddress) {
         int Radius = 6371;// radius of earth in Km
-        double lat1 = startP.latitude;
-        double lat2 = endP.latitude;
-        double lon1 = startP.longitude;
-        double lon2 = endP.longitude;
+        double lat1 = startAddress.latitude;
+        double lat2 = endAddress.latitude;
+        double lon1 = startAddress.longitude;
+        double lon2 = endAddress.longitude;
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
@@ -45,29 +44,5 @@ public class DistanceCalculator {
         return Radius * c;
     }
 
-    private static LatLng getLocationFromAddress(Context context, String strAddress) {
 
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        }
-
-        return p1;
-    }
 }

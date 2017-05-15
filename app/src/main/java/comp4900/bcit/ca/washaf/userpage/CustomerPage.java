@@ -129,7 +129,7 @@ public class CustomerPage extends AppCompatActivity
 
     private Bundle saveDataToFragment() {
         Bundle bun = new Bundle();
-        bun.putSerializable("user", new User(user));
+        bun.putSerializable("user", user);
         return bun;
     }
 

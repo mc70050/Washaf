@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cust_order_frag"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#9AE2FD">
+    android:layout_height="match_parent">
 
     <ListView
         android:id="@+id/current_orders"
@@ -13,9 +12,13 @@
 
     </ListView>
 
-    <Button android:id="@+id/order_button"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/order_button"
         android:layout_width="match_parent"
-        android:text="Place an order"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:text="Place your order"/>
+
 </RelativeLayout>

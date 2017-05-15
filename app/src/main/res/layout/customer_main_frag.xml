@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="#9AE2FD">
 
     <LinearLayout
         android:orientation="vertical"
@@ -11,7 +12,9 @@
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:weightSum="1">
+        android:paddingBottom="24dp"
+        android:weightSum="1"
+        android:background="@drawable/linearlayout_border">
 
 
         <TextView
@@ -40,8 +43,8 @@
             android:id="@+id/bag_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ccc"
-            android:popupBackground="#ccc">
+            android:background="#eee"
+            android:popupBackground="#eee">
 
         </Spinner>
         <Button
@@ -50,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Click to request for service"/>
+
         <TextView
             android:id="@+id/orderBagTag"
             android:layout_marginTop="40dp"
@@ -60,8 +64,8 @@
             android:id="@+id/request_bag_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ccc"
-            android:popupBackground="#ccc"/>
+            android:background="#eee"
+            android:popupBackground="#eee"/>
         <Button
             android:id="@+id/order_bag_button"
             android:layout_marginTop="15dp"
@@ -69,5 +73,7 @@
             android:layout_height="wrap_content"
             android:text="Click to request for bags"/>
 
+
     </LinearLayout>
+
 </ScrollView>

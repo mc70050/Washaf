@@ -41,7 +41,7 @@ public class User implements Serializable {
      * @param type type of user, see class UserType for more detail
      */
     public User(String firstName, String lastName, String address, String email,
-                String phoneNum, long type) {
+                String phoneNum, long type, String storeUid) {
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
@@ -49,6 +49,7 @@ public class User implements Serializable {
         setPhoneNum(phoneNum);
         setType(type);
         setNumOfBags(0);
+        setAssociatedStoreUid(storeUid);
     }
 
     public User(User user) {

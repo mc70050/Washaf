@@ -47,9 +47,11 @@
             android:name=".userpage.OrderPage"
             android:label="@string/title_activity_order_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".userpage.OrderConfirmPage"
+        <activity
+            android:name=".userpage.OrderConfirmPage"
             android:label="@string/title_activity_order_confirm_page"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".userpage.OrderSentPage"></activity>
     </application>
 
 </manifest>

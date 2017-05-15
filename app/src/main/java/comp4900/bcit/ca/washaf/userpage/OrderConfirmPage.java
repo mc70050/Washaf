@@ -188,6 +188,7 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
         if (fm.findFragmentByTag("tag") == null) {
             OrderConfirmFrag f = new OrderConfirmFrag();
             f.setArguments(saveDataToFragment());
+            f.setArguments(getIntent().getExtras());
             ft.replace(R.id.customer_content, f, "tag");
         } else if (!(fm.findFragmentByTag("tag") instanceof OrderConfirmFrag)) {
             Log.d("loadOrder", "fragment is not main");

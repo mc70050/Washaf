@@ -1,6 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/order_confirm_title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/service_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Service Type: " />
+
+    <TextView
+        android:id="@+id/pick_up_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/service_type"
+        android:layout_below="@+id/service_type"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Pick Up/Drop Off: " />
+
+    <TextView
+        android:id="@+id/pick_up_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/pick_up_type"
+        android:layout_below="@+id/pick_up_type"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Date of Pick Up/Drop Off: " />
+
+    <TextView
+        android:id="@+id/pick_up_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/pick_up_day"
+        android:layout_below="@+id/pick_up_day"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Time of Pick Up/Drop Off: " />
+
+    <TextView
+        android:id="@+id/drop_off_store"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/pick_up_time"
+        android:layout_below="@+id/pick_up_time"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Drop Off Store: "
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/num_bag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/drop_off_store"
+        android:layout_below="@+id/drop_off_store"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Number of bags: " />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/num_bag"
+        android:layout_below="@+id/num_bag"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Estimated Price: " />
+
+    <TextView
+        android:id="@+id/delivery_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/price"
+        android:layout_below="@+id/price"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Delivery/Pick Up: " />
+
+    <TextView
+        android:id="@+id/delivery_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/delivery_type"
+        android:layout_below="@+id/delivery_type"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Delivery/Pick Up Day: " />
+
+    <TextView
+        android:id="@+id/delivery_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/delivery_day"
+        android:layout_below="@+id/delivery_day"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Delivery/Pick Up Time: " />
+
+    <TextView
+        android:id="@+id/delivery_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/delivery_time"
+        android:layout_below="@+id/delivery_time"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/cell_shape"
+        android:padding="10dp"
+        android:text="Delivery/Pick Up Address: "
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/send_order_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delivery_location"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="Send Order"
+        android:textStyle="italic" />
+</RelativeLayout>
+    </ScrollView>

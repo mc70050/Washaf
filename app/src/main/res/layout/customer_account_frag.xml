@@ -13,33 +13,41 @@
         android:id="@+id/fullname_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="50dp"
-        android:paddingBottom="50dp"
-        android:textSize="15sp"/>
+        android:padding="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:textSize="15sp"
+        android:background="@drawable/account_row" />
 
     <!--  Email Label  -->
     <TextView
         android:id="@+id/email_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
-        android:textSize="15sp" />
+        android:padding="10dp"
+        android:layout_marginBottom="40dp"
+        android:textSize="15sp"
+        android:background="@drawable/account_row"/>
 
     <!--  Address Label  -->
     <TextView
         android:id="@+id/address_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
-        android:textSize="15sp"/>
+        android:padding="10dp"
+        android:layout_marginBottom="40dp"
+        android:textSize="15sp"
+        android:background="@drawable/account_row" />
 
     <!--  Phone Label  -->
     <TextView
         android:id="@+id/phone_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
-        android:textSize="15sp"/>
+        android:padding="10dp"
+        android:textSize="15sp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/account_row"/>
 
 
 

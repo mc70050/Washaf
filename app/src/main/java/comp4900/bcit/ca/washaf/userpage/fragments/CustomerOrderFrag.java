@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 import comp4900.bcit.ca.washaf.CurrentOrder;
 import comp4900.bcit.ca.washaf.R;
-import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.OrderPage;
 
 /**
@@ -42,6 +41,7 @@ public class CustomerOrderFrag extends Fragment {
     private DatabaseReference curOrderRef;
     private static ListView currentOrders;
     private FirebaseUser auth;
+    private Button orderButton;
 
     @Override
     public void onAttach(Activity act)
@@ -52,9 +52,11 @@ public class CustomerOrderFrag extends Fragment {
     }
 
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.customer_order_frag, container, false);
+        orderButton = (Button) view.findViewById(R.id.order_button);
         getActivity().setTitle(TITLE);
         db = FirebaseDatabase.getInstance();
         currentOrders = (ListView) view.findViewById(R.id.current_orders);
@@ -71,17 +73,16 @@ public class CustomerOrderFrag extends Fragment {
         };
         currentOrders.setAdapter(adapter);
 
-        Button order = (Button) view.findViewById(R.id.order_button);
-        order.setOnClickListener(new View.OnClickListener() {
+        orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(view.getContext(), OrderPage.class);
-                intent.putExtra("user", getArguments().getSerializable("user"));
-                startActivity(intent);
+                Bundle bun = new Bundle();
+                bun.putSerializable("user", getArguments().getSerializable("user"));
+                startActivity(intent.putExtras(bun));
                 getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
-
 
 
         return view;

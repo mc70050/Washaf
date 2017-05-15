@@ -55,6 +55,7 @@ public class OrderFrag extends Fragment {
     private RadioGroup serviceGroup;
     private RadioGroup pickUpGroup;
     private RadioGroup deliveryGroup;
+    private Spinner   quantity;
 
     private User user;
     private boolean pickupDateChosen;
@@ -72,7 +73,7 @@ public class OrderFrag extends Fragment {
         ImageView chooseDayIcon2;
         ImageView chooseTimeIcon;
         ImageView chooseTimeIcon2;
-        Spinner   quantity;
+
         pickupDateChosen = false;
         deliveryDateChosen = false;
         firstDayChosen = 0;
@@ -360,12 +361,14 @@ public class OrderFrag extends Fragment {
         if (dropOffButton.isChecked()) {
             bun.putString("drop off location", chooseStoreText.getText().toString());
         }
+        bun.putString("quantity", quantity.getSelectedItem().toString());
         bun.putString("delivery service", getRadioGroupText(deliveryGroup));
         bun.putString("delivery day", chooseDayText2.getText().toString());
         bun.putString("delivery time", chooseTimeText2.getText().toString());
         if (deliveryButton.isChecked()) {
             bun.putString("delivery location", addressText.getText().toString());
         }
+        bun.putSerializable("user", user);
         return bun;
     }
 
