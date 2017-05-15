@@ -16,7 +16,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDR90SBc5sH1gECO5M06h6B31DSj6Ko9To" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +25,6 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".TestPage" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity
             android:name=".userpage.AdminPage"
@@ -43,7 +42,14 @@
             android:name=".userpage.TopAdminPage"
             android:label="@string/title_activity_top_admin_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".userpage.Chatbox"></activity>
+        <activity android:name=".userpage.Chatbox" />
+        <activity
+            android:name=".userpage.OrderPage"
+            android:label="@string/title_activity_order_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".userpage.OrderConfirmPage"
+            android:label="@string/title_activity_order_confirm_page"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

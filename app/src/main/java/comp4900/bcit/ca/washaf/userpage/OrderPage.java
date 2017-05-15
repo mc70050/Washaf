@@ -1,25 +1,20 @@
 package comp4900.bcit.ca.washaf.userpage;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,18 +22,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
-import comp4900.bcit.ca.washaf.userpage.fragments.CustomerMainFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.OrderFrag;
 
-public class CustomerPage extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class OrderPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_page);
+        setContentView(R.layout.activity_order_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,7 +40,7 @@ public class CustomerPage extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(CustomerPage.this, Chatbox.class);
+                Intent i = new Intent(OrderPage.this, Chatbox.class);
                 startActivity(i);
             }
         });
@@ -60,9 +54,8 @@ public class CustomerPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        user = (User)getIntent().getSerializableExtra("user");
-        setTitle("Welcome, " + user.getFirstName() + " " + user.getLastName());
-        loadOrder();
+        user = (User) getIntent().getExtras().getSerializable("user");
+        loadOrderFirst();
     }
 
     @Override
@@ -72,8 +65,7 @@ public class CustomerPage extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            FirebaseAuth.getInstance().signOut();
-            finish();
+            overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
         }
     }
 
@@ -107,7 +99,6 @@ public class CustomerPage extends AppCompatActivity
 
         if (id == R.id.nav_main) {
             Log.d("Navi", "clicked main");
-            loadMain();
         } else if (id == R.id.nav_order) {
             // Handle the camera action
             Log.d("Navi", "clicked order");
@@ -129,26 +120,8 @@ public class CustomerPage extends AppCompatActivity
 
     private Bundle saveDataToFragment() {
         Bundle bun = new Bundle();
-        bun.putSerializable("user", new User(user));
+        bun.putSerializable("user", user);
         return bun;
-    }
-
-    private void loadMain() {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        if (fm.findFragmentByTag("tag") == null) {
-            CustomerMainFrag f = new CustomerMainFrag();
-            f.setArguments(saveDataToFragment());
-            ft.replace(R.id.customer_content, f, "tag");
-        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerMainFrag)) {
-            CustomerMainFrag f = new CustomerMainFrag();
-            f.setArguments(saveDataToFragment());
-            ft.replace(R.id.customer_content, f, "tag");
-        } else {
-
-        }
-
-        ft.commit();
     }
 
     private void loadOrder() {
@@ -180,6 +153,25 @@ public class CustomerPage extends AppCompatActivity
         } else if (!(fm.findFragmentByTag("tag") instanceof CustomerAccountFrag)) {
             Log.d("loadOrder", "fragment is not main");
             CustomerAccountFrag f = new CustomerAccountFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {
+
+        }
+
+        ft.commit();
+    }
+
+    private void loadOrderFirst() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            OrderFrag f = new OrderFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof OrderFrag)) {
+            Log.d("loadOrder", "fragment is not main");
+            OrderFrag f = new OrderFrag();
             f.setArguments(saveDataToFragment());
             ft.replace(R.id.customer_content, f, "tag");
         } else {

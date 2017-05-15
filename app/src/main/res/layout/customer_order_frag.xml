@@ -13,4 +13,9 @@
 
     </ListView>
 
+    <Button android:id="@+id/order_button"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Place an order"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

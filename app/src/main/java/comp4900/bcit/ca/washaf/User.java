@@ -58,7 +58,7 @@ public class User implements Serializable {
         setAddress(user.getAddress());
         setPhoneNum(user.getPhoneNum());
         setType(user.getType());
-        setNumOfBags(0);
+        setNumOfBags(user.getNumOfBags());
     }
 
     // Start of all getters and setters
