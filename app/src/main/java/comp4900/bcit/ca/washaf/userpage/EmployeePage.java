@@ -1,9 +1,12 @@
 package comp4900.bcit.ca.washaf.userpage;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,9 +18,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import comp4900.bcit.ca.washaf.R;
+import comp4900.bcit.ca.washaf.User;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.EmployeeMainFrag;
 
 public class EmployeePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +48,10 @@ public class EmployeePage extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        user = (User)getIntent().getSerializableExtra("user");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        loadMain();
     }
 
     @Override
@@ -92,5 +101,30 @@ public class EmployeePage extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private Bundle saveDataToFragment() {
+        Bundle bun = new Bundle();
+        bun.putSerializable("user", user);
+        return bun;
+    }
+
+    private void loadMain() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            EmployeeMainFrag f = new EmployeeMainFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.employee_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof EmployeeMainFrag)) {
+            Log.d("loadOrder", "fragment is not main");
+            EmployeeMainFrag f = new EmployeeMainFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.employee_content, f, "tag");
+        } else {
+
+        }
+
+        ft.commit();
     }
 }

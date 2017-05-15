@@ -12,6 +12,9 @@
     <string name="title_activity_order_page">Order Page</string>
     <string name="title_activity_order_confirm_page">Order Confirmation Page</string>
 
+    <string name="employee_start_working">Start Working?</string>
+    <string name="employee_stop_working">Stop Working?</string>
+
     <string name="order_confirmation_title">Order Confirmation</string>
     <string name="order_confirmation_content">Please confirm that you want to send this request</string>
 

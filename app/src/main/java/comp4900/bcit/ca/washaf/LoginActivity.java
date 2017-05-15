@@ -119,9 +119,16 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            progressDialog.dismiss();
-                            checkIfEmailVerified();
+                            final UserType type = UserType.values()[(int)db.getUserType(auth.getCurrentUser().getUid())];
+                            if (type == UserType.CUSTOMER) {
+                                Log.d(TAG, "signInWithEmail:success");
+                                progressDialog.dismiss();
+                                checkIfEmailVerified();
+                            } else if (type == UserType.EMPLOYEE) {
+                                progressDialog.dismiss();
+                                onLoginSuccess();
+                            }
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
