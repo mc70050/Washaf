@@ -26,7 +26,7 @@ public class Chatbox extends AppCompatActivity {
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new WebViewClient());
-        myWebView.loadUrl("https://tawk.to/chat/5910a7d64ac4446b24a6de09/default/?$_tawk_popout=true");
+        myWebView.loadUrl("https://tawk.to/chat/5914ffc94ac4446b24a6e93e/default/?$_tawk_popout=true");
 
         myWebView.setWebViewClient(new WebViewClient() {
 
