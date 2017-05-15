@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/choose_pickup_dropoff"
-        android:layout_below="@+id/choose_time_icon"
+        android:layout_below="@+id/choose_store_icon"
         android:layout_marginTop="17dp"
         android:text="3. Please choose quantity of order"
         tools:textStyle="bold" />
@@ -138,6 +138,16 @@
         android:src="@drawable/clock2" />
 
     <ImageView
+        android:id="@+id/choose_store_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/choose_time_icon"
+        android:layout_below="@+id/choose_time_icon"
+        android:background="@drawable/cell_shape"
+        android:src="@drawable/store"
+        android:visibility="gone"/>
+
+    <ImageView
         android:id="@+id/choose_time_icon2"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -145,6 +155,16 @@
         android:layout_below="@+id/choose_day_icon2"
         android:background="@drawable/cell_shape"
         android:src="@drawable/clock2" />
+
+    <ImageView
+        android:id="@+id/choose_map_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/choose_time_icon2"
+        android:layout_below="@+id/choose_time_icon2"
+        android:background="@drawable/cell_shape"
+        android:src="@drawable/delivery_icon"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/choose_day_text"
@@ -186,24 +206,52 @@
         android:padding="5dp" />
 
     <TextView
+        android:id="@+id/choose_store_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/choose_store_icon"
+        android:layout_below="@+id/choose_time_icon"
+        android:layout_marginRight="20dp"
+        android:layout_toEndOf="@+id/choose_store_icon"
+        android:background="@drawable/cell_shape"
+        android:gravity="center_vertical"
+        android:hint="@string/choose_pickup_time"
+        android:padding="5dp"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/choose_time_text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/choose_time_icon2"
-        android:layout_below="@+id/choose_day_icon2"
         android:layout_marginRight="20dp"
-        android:layout_toEndOf="@+id/choose_time_icon2"
         android:background="@drawable/cell_shape"
         android:gravity="center_vertical"
         android:hint="@string/choose_pickup_time2"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:layout_below="@+id/choose_day_text2"
+        android:layout_toEndOf="@+id/choose_day_icon2"
+        android:layout_alignBottom="@+id/choose_time_icon2" />
+
+    <EditText
+        android:id="@+id/choose_address_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/cell_shape"
+        android:gravity="center_vertical"
+        android:hint="@string/choose_delivery_address"
+        android:padding="5dp"
+        android:layout_below="@+id/choose_time_text2"
+        android:layout_toEndOf="@+id/choose_map_icon"
+        android:layout_alignBottom="@+id/choose_map_icon"
+        android:visibility="gone"/>
 
     <Button android:id="@+id/next_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="Next >>"
         android:layout_marginTop="11dp"
-        android:layout_below="@+id/choose_time_icon2" />
+        android:layout_below="@+id/choose_map_icon" />
 
     <Spinner
         android:id="@+id/spinner"

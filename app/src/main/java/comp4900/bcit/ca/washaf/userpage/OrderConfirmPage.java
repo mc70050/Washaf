@@ -23,16 +23,17 @@ import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.OrderConfirmFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.OrderFrag;
 
-public class OrderPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class OrderConfirmPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_page);
+        setContentView(R.layout.activity_order_confirm_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,7 +41,7 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(OrderPage.this, Chatbox.class);
+                Intent i = new Intent(OrderConfirmPage.this, Chatbox.class);
                 startActivity(i);
             }
         });
@@ -55,7 +56,7 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         user = (User) getIntent().getExtras().getSerializable("user");
-        loadOrderFirst();
+        loadOrderConfirm();
     }
 
     @Override
@@ -169,7 +170,7 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
             OrderFrag f = new OrderFrag();
             f.setArguments(saveDataToFragment());
             ft.replace(R.id.customer_content, f, "tag");
-        } else if (!(fm.findFragmentByTag("tag") instanceof OrderFrag)) {
+        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerAccountFrag)) {
             Log.d("loadOrder", "fragment is not main");
             OrderFrag f = new OrderFrag();
             f.setArguments(saveDataToFragment());
@@ -178,6 +179,22 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
 
         }
 
+        ft.commit();
+    }
+
+    private void loadOrderConfirm() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            OrderConfirmFrag f = new OrderConfirmFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof OrderConfirmFrag)) {
+            Log.d("loadOrder", "fragment is not main");
+            OrderConfirmFrag f = new OrderConfirmFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {}
         ft.commit();
     }
 }

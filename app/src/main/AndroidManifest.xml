@@ -26,7 +26,6 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".TestPage" />
         <activity android:name=".ResetPasswordActivity" />
-        <activity android:name=".userpage.fragments.OrderFrag" />
         <activity
             android:name=".userpage.AdminPage"
             android:label="@string/title_activity_admin_page"
@@ -47,8 +46,10 @@
         <activity
             android:name=".userpage.OrderPage"
             android:label="@string/title_activity_order_page"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".userpage.OrderConfirmPage"
+            android:label="@string/title_activity_order_confirm_page"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
