@@ -23,6 +23,7 @@ public class CurrentOrder implements Serializable {
     private long   quantity;
     private long   price;
     private OrderStatus status;
+    private String customer_id;
 
     private static final long WASHAF_PRICE = 35;
     private static final long BAG_PRICE = 10;
@@ -197,6 +198,13 @@ public class CurrentOrder implements Serializable {
 
     public void setDelivery_time(String delivery_time) {
         this.delivery_time = delivery_time;
+    }
+
+    public String getCustomer_id() {
+        return customer_id;
+    }
+    public void setCustomer_id(String customer_id) {
+        this.customer_id = customer_id;
     }
 
     public String getDelivery_address() {

@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +16,10 @@ import java.util.Map;
 
 public class OrderAdapter extends BaseAdapter {
     private final ArrayList mData;
+
+    public OrderAdapter() {
+        mData = new ArrayList();
+    }
 
     public OrderAdapter(Map<String, CurrentOrder> map) {
         mData = new ArrayList();
@@ -42,7 +47,7 @@ public class OrderAdapter extends BaseAdapter {
         final View result;
 
         if (convertView == null) {
-            result = LayoutInflater.from(parent.getContext()).inflate(R.layout.cust_current_order_process, parent, false);
+            result = LayoutInflater.from(parent.getContext()).inflate(R.layout.employee_assigned_order, parent, false);
         } else {
             result = convertView;
         }
@@ -50,9 +55,15 @@ public class OrderAdapter extends BaseAdapter {
         Map.Entry<String, CurrentOrder> item = getItem(position);
 
         // TODO replace findViewById by ViewHolder
-        ((TextView) result.findViewById(android.R.id.text1)).setText(item.getValue().getServiceType());
-        ((TextView) result.findViewById(android.R.id.text2)).setText(item.getValue().getRequestedTime());
+        ((TextView) result.findViewById(R.id.text1)).setText(item.getValue().getServiceType());
+        ((TextView) result.findViewById(R.id.text2)).setText(item.getValue().getRequestedTime());
+        ((TextView) result.findViewById(R.id.text3)).setText(item.getValue().getStatus().toString());
+        ((Button) result.findViewById(R.id.update)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         return result;
     }
 }
