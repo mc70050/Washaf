@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -27,6 +28,7 @@ import java.util.Date;
 
 import comp4900.bcit.ca.washaf.CurrentOrder;
 import comp4900.bcit.ca.washaf.DBAccess;
+import comp4900.bcit.ca.washaf.PurchaseActivity;
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
 
@@ -82,6 +84,8 @@ public class CustomerMainFrag extends Fragment {
             builder.setMessage(R.string.order_confirmation_content).setTitle(R.string.order_confirmation_title);
             builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    Intent pay = new Intent(getActivity(), PurchaseActivity.class);
+                    startActivity(pay);
                     String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
                     db.writeNewOrder(auth.getUid(), new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
                             user.getEmail(), "request for bags", currentDateTime, Long.parseLong(bagRequestSpin.getSelectedItem().toString()),
