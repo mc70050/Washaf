@@ -46,7 +46,7 @@ public class User implements Serializable {
         setLastName(lastName);
         setEmail(email);
         setAddress(address);
-        setPhoneNum(phoneNum);
+        setPhoneNum(formatPhone(phoneNum));
         setType(type);
         setNumOfBags(0);
         setAssociatedStoreUid(storeUid);
@@ -101,7 +101,7 @@ public class User implements Serializable {
     }
 
     public void setPhoneNum(String phoneNum) {
-        this.phoneNum = formatPhone(phoneNum);
+        this.phoneNum = phoneNum;
     }
 
     public long getType() {

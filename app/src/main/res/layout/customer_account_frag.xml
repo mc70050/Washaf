@@ -17,7 +17,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
         android:textSize="15sp"
-        android:background="@drawable/account_row" />
+        android:background="@drawable/cell_shape" />
 
     <!--  Email Label  -->
     <TextView
@@ -27,7 +27,7 @@
         android:padding="10dp"
         android:layout_marginBottom="40dp"
         android:textSize="15sp"
-        android:background="@drawable/account_row"/>
+        android:background="@drawable/cell_shape"/>
 
     <!--  Address Label  -->
     <TextView
@@ -37,7 +37,7 @@
         android:padding="10dp"
         android:layout_marginBottom="40dp"
         android:textSize="15sp"
-        android:background="@drawable/account_row" />
+        android:background="@drawable/cell_shape" />
 
     <!--  Phone Label  -->
     <TextView
@@ -47,7 +47,7 @@
         android:padding="10dp"
         android:textSize="15sp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/account_row"/>
+        android:background="@drawable/cell_shape"/>
 
 
 

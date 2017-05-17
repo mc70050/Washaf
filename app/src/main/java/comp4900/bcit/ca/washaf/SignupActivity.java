@@ -42,6 +42,9 @@ import java.util.Locale;
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
+/**
+ * Sign up page. Only used to create customer accounts.
+ */
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
     private static final double SERVICE_RANGE = 5;
@@ -166,6 +169,9 @@ public class SignupActivity extends AppCompatActivity {
         finish();
     }
 
+    /*
+     * Save an user into database.
+     */
     private void saveUser(String uid, String fName, String lName, String email, String phone, String address) {
         DBAccess db = new DBAccess();
         String id = findNearestStoreId(address);
@@ -178,6 +184,10 @@ public class SignupActivity extends AppCompatActivity {
         db.writeUserToGroup(uid, user);
     }
 
+    /*
+     * Finds and returns the UID of the administrator that owns a store
+     * closest to the user that just signed up for an account.
+     */
     private String findNearestStoreId(String newUserAddress) {
         String id = "";
         double nearestDist = SERVICE_RANGE;
@@ -192,6 +202,9 @@ public class SignupActivity extends AppCompatActivity {
         return id;
     }
 
+    /*
+     * Takes a string of address and returns the latitude and longitude.
+     */
     private LatLng getLocationFromAddress(String strAddress) {
 
         Geocoder coder = new Geocoder(this, Locale.getDefault());
@@ -216,6 +229,10 @@ public class SignupActivity extends AppCompatActivity {
         return p1;
     }
 
+    /*
+     * Fill a HashMap<String, User> with all the admins that are in the database.
+     * This is used in conjunction with finding the nearest store method.
+     */
     private void getAdmins() {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference adminRef = db.getReference("group").child("admin");
@@ -243,6 +260,9 @@ public class SignupActivity extends AppCompatActivity {
         _signupButton.setEnabled(true);
     }
 
+    /*
+     * Validate all parameters entered by user trying to sign up.
+     */
     private boolean validate() {
         if (checkFirstName(_firstNameText.getText().toString()) && checkLastName(_lastNameText.getText().toString())
                 && checkEmail(_emailText.getText().toString())  && checkPassword(_passwordText.getText().toString())
@@ -253,6 +273,9 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * First names have to have at least 3 characters. No other limitations.
+     */
     private boolean checkFirstName(String s) {
         if (s.isEmpty() || s.length() < 3) {
             _firstNameText.setError("at least 3 characters");
@@ -263,6 +286,9 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Last names have to have at least 2 characters. No other limitations.
+     */
     private boolean checkLastName(String s) {
         if (s.isEmpty() || s.length() < 2) {
             _lastNameText.setError("at least 2 characters");
@@ -273,6 +299,11 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Email is checked using built-in functions.
+     * Has to be in correct format.
+     * E.g. **@*.***
+     */
     private boolean checkEmail(String s) {
         if (s.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
             _emailText.setError("enter a valid email address");
@@ -283,6 +314,10 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Passwords need to be more than 6 characters.
+     * This is because of Firebase's built-in restriction.
+     */
     private boolean checkPassword(String s) {
         if (s.isEmpty() || s.length() < 6) {
             _passwordText.setError("password needs to be more than 6 characters");
@@ -293,6 +328,9 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Second column for entering password need to equal to first column.
+     */
     private boolean checkRePassword(String s) {
         if (s.isEmpty() || !_passwordText.getText().toString().equals(s)) {
             _passwordCheckText.setError("Please enter an identical password");
@@ -303,6 +341,9 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Phone number needs to be exactly 10 digits.
+     */
     private boolean checkPhone(String s) {
         if (s.isEmpty() || s.length() != 10) {
             _phoneText.setError("Please enter a 10 digit phone number");
@@ -313,6 +354,10 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Add Text Watchers onto every EditText object to constantly validate
+     * every column.
+     */
     private void setTextWatcher() {
         _firstNameText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -382,6 +427,11 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Opens an intent to search for address.
+     * This uses Google Place API.
+     * @param view that's calling this method
+     */
     public void searchAddress(final View view) {
         int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
         try {
@@ -418,6 +468,9 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Send a verification email to the user attempting to sign up.
+     */
     private void sendVerificationEmail()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

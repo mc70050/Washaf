@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 
 import comp4900.bcit.ca.washaf.CurrentOrder;
 import comp4900.bcit.ca.washaf.R;
+import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.OrderPage;
 
 /**
@@ -32,24 +34,15 @@ public class CustomerOrderFrag extends Fragment {
     private static final String TITLE = "Your Order Information";
     private static final String SERVICE = "Service: ";
     private static final String REQUESTED_TIME = "Requested Time: ";
-    private static final String COMPLETED_TIME = "Completed Time: ";
     private static final String STATUS         = "Status: ";
 
-    private Activity mActivity;
     private static FirebaseDatabase db;
     private static HashMap<String,CurrentOrder> curOrderList;
     private DatabaseReference curOrderRef;
     private static ListView currentOrders;
     private FirebaseUser auth;
     private Button orderButton;
-
-    @Override
-    public void onAttach(Activity act)
-    {
-        super.onAttach(act);
-
-        this.mActivity = act;
-    }
+    private TextView introMessage;
 
     @Override
 
@@ -57,6 +50,7 @@ public class CustomerOrderFrag extends Fragment {
 
         final View view = inflater.inflate(R.layout.customer_order_frag, container, false);
         orderButton = (Button) view.findViewById(R.id.order_button);
+        introMessage = (TextView) view.findViewById(R.id.intro_message);
         getActivity().setTitle(TITLE);
         db = FirebaseDatabase.getInstance();
         currentOrders = (ListView) view.findViewById(R.id.current_orders);
@@ -76,11 +70,16 @@ public class CustomerOrderFrag extends Fragment {
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(view.getContext(), OrderPage.class);
-                Bundle bun = new Bundle();
-                bun.putSerializable("user", getArguments().getSerializable("user"));
-                startActivity(intent.putExtras(bun));
-                getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                if (((User)getArguments().getSerializable("user")).getNumOfBags() > 0) {
+                    Intent intent = new Intent(view.getContext(), OrderPage.class);
+                    Bundle bun = new Bundle();
+                    bun.putSerializable("user", getArguments().getSerializable("user"));
+                    startActivity(intent.putExtras(bun));
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                } else {
+                    Toast.makeText(v.getContext(), "Please order bags first", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

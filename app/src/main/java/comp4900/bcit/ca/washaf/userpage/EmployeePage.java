@@ -16,6 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
@@ -95,7 +98,10 @@ public class EmployeePage extends AppCompatActivity
         if (id == R.id.nav_check_order) {
             // Handle the camera action
         } else if (id == R.id.nav_logout) {
-
+            Toast.makeText(getBaseContext(), "You have been successfully logged out.", Toast.LENGTH_LONG).show();
+            EmployeeMainFrag.logout();
+            FirebaseAuth.getInstance().signOut();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

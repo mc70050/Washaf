@@ -98,7 +98,7 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_main) {
+        if (id == R.id.nav_order_bag) {
             Log.d("Navi", "clicked main");
         } else if (id == R.id.nav_order) {
             // Handle the camera action

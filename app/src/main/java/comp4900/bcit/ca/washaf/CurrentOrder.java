@@ -1,11 +1,13 @@
 package comp4900.bcit.ca.washaf;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 /**
  * Created by Michael on 2017-05-09.
+ * Represents all orders. Name was given at beginning of project.
  */
-
 public class CurrentOrder implements Serializable {
     private String customerName;
     private String address;
@@ -28,9 +30,27 @@ public class CurrentOrder implements Serializable {
     private static final long WASHAF_PRICE = 35;
     private static final long BAG_PRICE = 10;
 
-    public CurrentOrder() {
+    /**
+     * Default constructor.
+     */
+    public CurrentOrder() {}
 
-    }
+    /**
+     * Constructor for orders that do not require delivery service.
+     * @param name of customer
+     * @param address of customer
+     * @param phone of customer
+     * @param email of customer
+     * @param serviceType type of service
+     * @param requestedTime for the order
+     * @param quantity number of bags for the order
+     * @param pickup_type either pick up or drop off
+     * @param pickup_day day requested for pick up
+     * @param pickup_time time for order to be picked up
+     * @param delivery_type delivery or pick up, but must be pick up in this constructor
+     * @param delivery_day day for delivery
+     * @param delivery_time time frame for dellivery
+     */
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
                         long quantity, String pickup_type, String pickup_day, String pickup_time, String delivery_type,
                         String delivery_day, String delivery_time) {
@@ -72,11 +92,31 @@ public class CurrentOrder implements Serializable {
         setStatus(OrderStatus.REQUESTED);
     }
 
+    public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
+                        long quantity,String delivery_type) {
+        customerName = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.serviceType = serviceType;
+        this.requestedTime = requestedTime;
+        this.quantity = quantity;
+        setDelivery_type(delivery_type);
+        setPrice(serviceType, quantity);
+        setStatus(OrderStatus.REQUESTED);
+    }
+
     private void setPrice(String serviceType, long quantity) {
         if (serviceType.equalsIgnoreCase("wash and fold")) {
             price = WASHAF_PRICE * quantity;
-        } else if (serviceType.equalsIgnoreCase("request for bag")) {
-            price = BAG_PRICE * quantity;
+        } else if (serviceType.equalsIgnoreCase("request for bags")) {
+            if (delivery_type.equalsIgnoreCase("pick up")) {
+                Log.d("setPrice", "pick up price");
+                price = BAG_PRICE * quantity;
+            } else {
+                Log.d("setPrice", "delivery price");
+                price = BAG_PRICE * quantity + 2;
+            }
         }
     }
 
@@ -97,6 +137,7 @@ public class CurrentOrder implements Serializable {
     }
 
     public String getPhone() {
+        Log.d("Phone", phone);
         return phone;
     }
 

@@ -73,6 +73,7 @@ public class CustomerPage extends AppCompatActivity
         } else {
             super.onBackPressed();
             FirebaseAuth.getInstance().signOut();
+            Toast.makeText(getBaseContext(), "You have been successfully logged out.", Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -105,7 +106,7 @@ public class CustomerPage extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_main) {
+        if (id == R.id.nav_order_bag) {
             Log.d("Navi", "clicked main");
             loadMain();
         } else if (id == R.id.nav_order) {

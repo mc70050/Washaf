@@ -36,4 +36,8 @@
     <string name="choose_pickup_day_message">Please choose Pick up/Drop off date first</string>
 
     <string name="order_confirm_title"><u>Order Detail Confirmation</u></string>
+
+    <string name="login_text">Wash And Fold services provided to you with a fixed price. Pick up and Delivery included</string>
+    <string name="order_intro_message">Welcome and thank you for using Washaf.<b></b>
+    You can place a new order for service by clicking on the button at the bottom of the screen or you can order for new bags by clicking on the menu button at the top left corner and choose order new bags</string>
 </resources>

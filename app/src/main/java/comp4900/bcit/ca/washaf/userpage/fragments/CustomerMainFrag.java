@@ -38,23 +38,12 @@ public class CustomerMainFrag extends Fragment {
     private final String TAG = "CustomerMainFrag";
     private static final String TITLE = "Place Orders Here";
 
-    private Activity mActivity;
-    private static Spinner spin;
     private static Spinner bagRequestSpin;
-    private static Button orderButton;
     private static Button orderBagButton;
     private static User user;
     private static DBAccess db;
     private static FirebaseUser auth;
     private static RadioGroup group;
-
-    @Override
-    public void onAttach(Activity act)
-    {
-        super.onAttach(act);
-
-        this.mActivity = act;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -64,31 +53,15 @@ public class CustomerMainFrag extends Fragment {
         db = new DBAccess();
         user = (User)getArguments().getSerializable("user");
         auth = FirebaseAuth.getInstance().getCurrentUser();
-        group = (RadioGroup) view.findViewById(R.id.radioService);
 
 
         //do whatever you want here - like set text to display in your fragment
-        spin = (Spinner) view.findViewById(R.id.bag_number);
         bagRequestSpin = (Spinner) view.findViewById(R.id.request_bag_number);
+        group = (RadioGroup) view.findViewById(R.id.radioGroup2);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.bag_number_array,
                 android.R.layout.simple_list_item_1);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin.setAdapter(adapter);
         bagRequestSpin.setAdapter(adapter);
-        orderButton = (Button) view.findViewById(R.id.order_button);
-        orderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
-                Log.d(TAG, user.getFullName() + " has " + user.getNumOfBags() + " bags");
-                if (Integer.parseInt(spin.getSelectedItem().toString()) > user.getNumOfBags()) {
-                    Toast.makeText(view.getContext(), "You don't have this many bags", Toast.LENGTH_LONG).show();
-                } else {
-                    ServiceRequestDialog dialog = new ServiceRequestDialog();
-                    dialog.show(getFragmentManager(), "service request");
-                }
-            }
-        });
         orderBagButton = (Button) view.findViewById(R.id.order_bag_button);
         orderBagButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,33 +83,9 @@ public class CustomerMainFrag extends Fragment {
             builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
-
-                    OrderSentDialog message = new OrderSentDialog();
-                    message.show(getFragmentManager(), "thank you message");
-                }
-            });
-            builder.setNegativeButton(R.string.order_confirmation_cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                }
-            });
-            AlertDialog message = builder.create();
-            return message;
-        }
-    }
-
-    public static class ServiceRequestDialog extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            View button = group.findViewById(group.getCheckedRadioButtonId());
-            final RadioButton radio = (RadioButton) group.getChildAt(group.indexOfChild(button));
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.order_confirmation_content).setTitle(R.string.order_confirmation_title);
-            builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
-
+                    db.writeNewOrder(auth.getUid(), new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
+                            user.getEmail(), "request for bags", currentDateTime, Long.parseLong(bagRequestSpin.getSelectedItem().toString()),
+                            getRadioGroupText(group)));
                     OrderSentDialog message = new OrderSentDialog();
                     message.show(getFragmentManager(), "thank you message");
                 }
@@ -160,5 +109,17 @@ public class CustomerMainFrag extends Fragment {
             AlertDialog message = builder.create();
             return message;
         }
+    }
+
+    private static String getRadioGroupText(RadioGroup rg1) {
+        String selection = "";
+        if(rg1.getCheckedRadioButtonId()!=-1){
+            int id= rg1.getCheckedRadioButtonId();
+            View radioButton = rg1.findViewById(id);
+            int radioId = rg1.indexOfChild(radioButton);
+            RadioButton btn = (RadioButton) rg1.getChildAt(radioId);
+            selection = (String) btn.getText();
+        }
+        return selection;
     }
 }

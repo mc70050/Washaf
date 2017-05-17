@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="24dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:paddingBottom="24dp"
@@ -18,54 +18,63 @@
 
 
         <TextView
-            android:id="@+id/serviceTag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Please choose the service you want to request"/>
-        <RadioGroup
-            android:id="@+id/radioService"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <RadioButton
-                android:id="@+id/radioWashaf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Wash and Fold"
-                android:checked="true" />
-        </RadioGroup>
-        <TextView
-            android:id="@+id/numberTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Please click to choose number of bags"/>
-        <Spinner
-            android:id="@+id/bag_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#eee"
-            android:popupBackground="#eee">
-
-        </Spinner>
-        <Button
-            android:id="@+id/order_button"
-            android:layout_marginTop="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Click to request for service"/>
-
-        <TextView
             android:id="@+id/orderBagTag"
-            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Please click to choose number of bags"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Please click to choose number of bags you would like to order"
+            android:textStyle="bold"/>
+
         <Spinner
             android:id="@+id/request_bag_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/spinner_style_bag"
+            android:popupBackground="@drawable/account_row"/>
+
+        <TextView
+            android:id="@+id/choose_delievery_pickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_alignStart="@+id/choose_quantity"
+            android:layout_below="@+id/spinner"
+            android:text="Please choose delivery service or pick up"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eee"
-            android:popupBackground="#eee"/>
+            android:layout_marginTop="11dp"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:layout_below="@+id/choose_delievery_pickup"
+            android:layout_alignParentEnd="true">
+
+            <RadioButton
+                android:id="@+id/pick_up2"
+                android:button="@drawable/custom_radio"
+                android:paddingLeft="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Pick up" />
+
+            <RadioButton
+                android:id="@+id/delivery"
+                android:button="@drawable/custom_radio"
+                android:paddingLeft="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:text="Delivery" />
+        </RadioGroup>
+
         <Button
             android:id="@+id/order_bag_button"
             android:layout_marginTop="15dp"

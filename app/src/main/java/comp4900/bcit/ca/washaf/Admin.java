@@ -2,8 +2,9 @@ package comp4900.bcit.ca.washaf;
 
 /**
  * Created by Michael on 2017/5/14.
+ * Subclass of User, this represents Administrators.
+ * They have an extra parameter for storing store name.
  */
-
 public class Admin extends User {
     public String storeName;
 

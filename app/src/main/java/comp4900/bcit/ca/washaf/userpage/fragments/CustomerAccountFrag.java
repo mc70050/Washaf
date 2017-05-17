@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import comp4900.bcit.ca.washaf.User;
 
 public class CustomerAccountFrag extends Fragment {
 
-    private Activity mActivity;
     private TextView emailText;
     private TextView nameText;
     private TextView addressText;
@@ -32,13 +32,6 @@ public class CustomerAccountFrag extends Fragment {
     private static final String TITLE   = "Your Account Information";
     private static final String TAG     = "CustomerAccountFrag";
 
-    @Override
-    public void onAttach(Activity act)
-    {
-        super.onAttach(act);
-
-        this.mActivity = act;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +53,7 @@ public class CustomerAccountFrag extends Fragment {
         nameText.setText(NAME + user.getFullName());
         addressText.setText(ADDRESS + user.getAddress());
         phoneText.setText(PHONE + user.getPhoneNum());
+        Log.d("phone", user.getPhoneNum());
 
         return view;
     }

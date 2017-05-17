@@ -2,19 +2,20 @@ package comp4900.bcit.ca.washaf.userpage.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,9 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,9 +40,9 @@ public class EmployeeMainFrag extends Fragment {
 
     private Button changeStatusButton;
     private boolean working_status;
-    private DatabaseReference workingRef;
-    private DatabaseReference orderRef;
-    private DatabaseReference curOrderRef;
+    private static DatabaseReference workingRef;
+    private static DatabaseReference orderRef;
+    private static DatabaseReference curOrderRef;
     private User user;
     private static HashMap<String,CurrentOrder> curOrderList;
     private ListView list;
@@ -64,6 +62,7 @@ public class EmployeeMainFrag extends Fragment {
         orderRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                int oldSize = curOrderList.size();
                 curOrderList.clear();
                 for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
                     CurrentOrder order = snapShot.getValue(CurrentOrder.class);
@@ -71,15 +70,10 @@ public class EmployeeMainFrag extends Fragment {
 
                 }
                 adapter = new EmployeeOrderAdapter(curOrderList);
-//                adapter = new FirebaseListAdapter<CurrentOrder>(getActivity(), CurrentOrder.class, R.layout.cust_current_order_process, orderRef) {
-//                    @Override
-//                    protected void populateView(View v, CurrentOrder model, int position) {
-//                        ((TextView) v.findViewById(R.id.text1)).setText(model.getServiceType());
-//                        ((TextView) v.findViewById(R.id.text2)).setText(model.getRequestedTime());
-//                        ((TextView) v.findViewById(R.id.text3)).setText(model.getStatus().toString());
-//                    }
-//                };
+
                 list.setAdapter(adapter);
+                if (curOrderList.size() > oldSize)
+                    showNotification(view);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) { }
@@ -95,6 +89,10 @@ public class EmployeeMainFrag extends Fragment {
             }
         });
         return view;
+    }
+
+    public static void logout() {
+        workingRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
     }
 
     private void stopWorking() {
@@ -159,14 +157,67 @@ public class EmployeeMainFrag extends Fragment {
             ((Button) result.findViewById(R.id.update)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    curOrderRef = FirebaseDatabase.getInstance().getReference("current order").child(item.getValue().getCustomer_id()).child(item.getValue().getRequestedTime()).child("status");
-                    curOrderRef.setValue(OrderStatus.PICKED_UP);
-                    orderRef.child(item.getValue().getRequestedTime()).child("status").setValue(OrderStatus.PICKED_UP);
-                    Toast.makeText(v.getContext(), item.getValue().getCustomer_id() + "", Toast.LENGTH_LONG).show();
+                    if (item.getValue().getStatus() != OrderStatus.COMPLETED)
+                        showConfirmDialog(item.getValue());
                 }
             });
             return result;
         }
+    }
+
+    private void showNotification(View view) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(view.getContext())
+                        .setSmallIcon(R.drawable.radio_selected)
+                        .setContentTitle("New Order!")
+                        .setContentText("Please check your order list")
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText("Hello World!"))
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+        NotificationManager mNotificationManager =
+                (NotificationManager) view.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(100, mBuilder.build());
+        Log.d("notify", "end of showNotification");
+    }
+
+    private void showConfirmDialog(final CurrentOrder item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setIcon(R.drawable.radio_selected);
+        builder.setTitle("Confirm status update");
+        builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (item.getStatus() == OrderStatus.ASSIGNED) {
+                    if (item.getServiceType().equalsIgnoreCase("request for bags")) {
+                        curOrderRef = FirebaseDatabase.getInstance().getReference("current order").child(item.getCustomer_id()).child(item.getRequestedTime()).child("status");
+                        curOrderRef.setValue(OrderStatus.IN_DELIVERY);
+                        orderRef.child(item.getRequestedTime()).child("status").setValue(OrderStatus.IN_DELIVERY);
+                    } else {
+                        curOrderRef = FirebaseDatabase.getInstance().getReference("current order").child(item.getCustomer_id()).child(item.getRequestedTime()).child("status");
+                        curOrderRef.setValue(OrderStatus.PICKED_UP);
+                        orderRef.child(item.getRequestedTime()).child("status").setValue(OrderStatus.PICKED_UP);
+                    }
+                } else if (item.getStatus() == OrderStatus.PICKED_UP) {
+                    curOrderRef = FirebaseDatabase.getInstance().getReference("current order").child(item.getCustomer_id()).child(item.getRequestedTime()).child("status");
+                    curOrderRef.setValue(OrderStatus.IN_STORE);
+                    orderRef.child(item.getRequestedTime()).child("status").setValue(OrderStatus.IN_STORE);
+                    FirebaseDatabase.getInstance().getReference("assigned order").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(item.getRequestedTime()).removeValue();
+                } else if (item.getStatus() == OrderStatus.READY_FOR_DELIVERY) {
+                    curOrderRef = FirebaseDatabase.getInstance().getReference("current order").child(item.getCustomer_id()).child(item.getRequestedTime()).child("status");
+                    curOrderRef.setValue(OrderStatus.IN_DELIVERY);
+                    orderRef.child(item.getRequestedTime()).child("status").setValue(OrderStatus.IN_DELIVERY);
+                } else if (item.getStatus() == OrderStatus.IN_DELIVERY) {
+                    curOrderRef = FirebaseDatabase.getInstance().getReference("current order").child(item.getCustomer_id()).child(item.getRequestedTime()).child("status");
+                    curOrderRef.setValue(OrderStatus.COMPLETED);
+                    orderRef.child(item.getRequestedTime()).child("status").setValue(OrderStatus.COMPLETED);
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.order_confirmation_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+        builder.show();
     }
 }

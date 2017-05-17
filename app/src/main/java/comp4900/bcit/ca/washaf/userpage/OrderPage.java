@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerMainFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.OrderFrag;
 
@@ -65,6 +66,7 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            startActivity(new Intent(this, CustomerPage.class).putExtras(saveDataToFragment()));
             overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
         }
     }
@@ -97,8 +99,9 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_main) {
+        if (id == R.id.nav_order_bag) {
             Log.d("Navi", "clicked main");
+            loadMain();
         } else if (id == R.id.nav_order) {
             // Handle the camera action
             Log.d("Navi", "clicked order");
@@ -122,6 +125,24 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         Bundle bun = new Bundle();
         bun.putSerializable("user", user);
         return bun;
+    }
+
+    private void loadMain() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            CustomerMainFrag f = new CustomerMainFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerMainFrag)) {
+            CustomerMainFrag f = new CustomerMainFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {
+
+        }
+
+        ft.commit();
     }
 
     private void loadOrder() {

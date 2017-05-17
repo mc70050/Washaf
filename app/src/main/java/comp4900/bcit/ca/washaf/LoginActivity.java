@@ -31,6 +31,9 @@ import butterknife.Bind;
 
 import comp4900.bcit.ca.washaf.userpage.*;
 
+/**
+ * Log in page of the app.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
@@ -172,7 +175,6 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         savePreference();
         goToUserPage(user.getUid());
-        finish();
     }
 
     /**
@@ -213,6 +215,10 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
+    /*
+     * Starts an activity based on the UID of the user.
+     * Passes in the User object to the next activity.
+     */
     private void goToUserPage(String uid) {
         final UserType type = UserType.values()[(int)db.getUserType(auth.getCurrentUser().getUid())];
         switch (type) {
@@ -234,6 +240,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Checks if the email of the user has been verified through email.
+     */
     private void checkIfEmailVerified()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -254,12 +263,19 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Initialize the preference system so email of user doesn't need to entered
+     * fully every single time.
+     */
     private void initializePreference() {
         preferences = getSharedPreferences(APP_NAME, MODE_PRIVATE);
         emailList = new ArrayList<String>(preferences.getStringSet("email", new HashSet<String>()));
         Log.d("initialize", emailList.toString());
     }
 
+    /*
+     * Save user's email address into app's preference.
+     */
     private void savePreference() {
         SharedPreferences.Editor editor = preferences.edit();
         String name = _emailText.getText().toString();
