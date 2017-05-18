@@ -20,7 +20,7 @@ import org.json.JSONException;
 import java.math.BigDecimal;
 
 public class PurchaseActivity extends Activity {
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
     // note that these credentials will differ between live & sandbox environments.
     private static final String CONFIG_CLIENT_ID = "AccBRuQPf2OVPU8RmtJewWzJKr5qcAgqqxEFULaU4VJdifvJ_pss3ffWhbzwzFOh6SQPV0AAwLPxFMYW";
     private static final int REQUEST_CODE_PAYMENT = 1;
