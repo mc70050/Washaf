@@ -108,7 +108,7 @@ public class CurrentOrder implements Serializable {
     }
 
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
-                        long quantity,String delivery_type) {
+                        long quantity,String delivery_type, String orderId) {
         customerName = name;
         this.address = address;
         this.phone = phone;
@@ -119,6 +119,7 @@ public class CurrentOrder implements Serializable {
         setDelivery_type(delivery_type);
         setPrice(serviceType, quantity);
         setStatus(OrderStatus.REQUESTED);
+        setOrderId(orderId);
     }
 
     public CurrentOrder(CurrentOrder order) {

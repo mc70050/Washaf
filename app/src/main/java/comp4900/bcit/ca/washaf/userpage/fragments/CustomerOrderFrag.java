@@ -35,6 +35,7 @@ import comp4900.bcit.ca.washaf.userpage.OrderPage;
 public class CustomerOrderFrag extends Fragment {
     private static final String TAG = "CustomerOrderFrag";
     private static final String ADDRESS = "Address: ";
+    private static final String ORDER_ID = "Order ID: ";
     private static final String DELIVERY_ADDRESS = "Delivery address: ";
     private static final String PICKUP_TYPE = "Pick up/Drop off: ";
     private static final String PICKUP_DAY = "Day of pick up: ";
@@ -44,8 +45,10 @@ public class CustomerOrderFrag extends Fragment {
     private static final String DELIVERY_TIME = "Delivery Time: ";
     private static final String TITLE = "Your Order Information";
     private static final String SERVICE = "Service: ";
+    private static final String PRICE = "Price: $";
     private static final String REQUESTED_TIME = "Requested Time: ";
     private static final String STATUS         = "Status: ";
+    private static final String QUANTITY = "Quantity: ";
 
     private static FirebaseDatabase db;
     private static HashMap<String,CurrentOrder> curOrderList;
@@ -118,14 +121,25 @@ public class CustomerOrderFrag extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setIcon(R.drawable.radio_selected);
         builder.setTitle("Order Detail");
-        builder.setMessage(SERVICE + order.getServiceType() + "\n\n"
-                            + PICKUP_TYPE + order.getPickup_type() + "\n\n"
-                            + PICKUP_DAY + order.getPickup_day() + "\n\n"
-                            + PICKUP_TIME + order.getPickup_time() + "\n\n"
-                            + DELIVERY_TYPE + order.getDelivery_type() + "\n\n"
-                            + DELIVERY_DAY + order.getDelivery_day() + "\n\n"
-                            + DELIVERY_TIME + order.getDelivery_time() + "\n\n"
-                            + (order.getDelivery_type().equalsIgnoreCase("delivery") ?  (DELIVERY_ADDRESS + order.getDelivery_address() + "\n\n") : ""));
+        if (order.getServiceType().equalsIgnoreCase("request for bags")) {
+            builder.setMessage(ORDER_ID + order.getOrderId() + "\n\n"
+                            + SERVICE + order.getServiceType() + "\n\n"
+                            + QUANTITY + order.getQuantity() + "\n\n"
+                            + PRICE + order.getPrice() + "\n\n"
+                            + DELIVERY_TYPE + order.getDelivery_type() + "\n\n");
+        } else {
+            builder.setMessage(ORDER_ID + order.getOrderId() + "\n\n"
+                    + SERVICE + order.getServiceType() + "\n\n"
+                    + QUANTITY + order.getQuantity() + "\n\n"
+                    + PRICE + order.getPrice() + "\n\n"
+                    + PICKUP_TYPE + order.getPickup_type() + "\n\n"
+                    + PICKUP_DAY + order.getPickup_day() + "\n\n"
+                    + PICKUP_TIME + order.getPickup_time() + "\n\n"
+                    + DELIVERY_TYPE + order.getDelivery_type() + "\n\n"
+                    + DELIVERY_DAY + order.getDelivery_day() + "\n\n"
+                    + DELIVERY_TIME + order.getDelivery_time() + "\n\n"
+                    + (order.getDelivery_type().equalsIgnoreCase("delivery") ? (DELIVERY_ADDRESS + order.getDelivery_address() + "\n\n") : ""));
+        }
         builder.show();
     }
 

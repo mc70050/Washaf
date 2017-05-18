@@ -86,12 +86,14 @@ public class CustomerMainFrag extends Fragment {
                 public void onClick(DialogInterface dialog, int id) {
                     Intent pay = new Intent(getActivity(), PurchaseActivity.class);
                     String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
+                    String orderId = (db.getOrderId() + 1) + "";
                     CurrentOrder newOrder = new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
                             user.getEmail(), "request for bags", currentDateTime, Long.parseLong(bagRequestSpin.getSelectedItem().toString()),
-                            getRadioGroupText(group));
+                            getRadioGroupText(group), orderId);
                     pay.putExtra("total price", newOrder.getPrice());
                     startActivity(pay);
                     db.writeNewOrder(auth.getUid(), newOrder);
+                    db.setOrderId(orderId);
                     OrderSentDialog message = new OrderSentDialog();
                     message.show(getFragmentManager(), "thank you message");
                 }

@@ -26,7 +26,9 @@ public class DBAccess {
     private DatabaseReference groupRef;
     private DatabaseReference curOrderRef;
     private DatabaseReference orderIdRef;
+    private DatabaseReference rewardRef;
     private String id;
+    private String rewardRecord;
 
     /**
      * Default constructor.
@@ -162,5 +164,29 @@ public class DBAccess {
 
     public void setOrderId(String id) {
         orderIdRef.setValue(id);
+    }
+
+    public void setRewardListener(String uid) {
+        rewardRef = database.getReference("reward record").child(uid);
+        rewardRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                rewardRecord = dataSnapshot.getValue(String.class);
+                Log.d(TAG, rewardRecord + " is current record");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public long getRewardRecord() {
+        return Long.parseLong(rewardRecord);
+    }
+
+    public void setRewardRecord(String record) {
+        rewardRef.setValue(record);
     }
 }
