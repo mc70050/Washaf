@@ -85,11 +85,13 @@ public class CustomerMainFrag extends Fragment {
             builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Intent pay = new Intent(getActivity(), PurchaseActivity.class);
-                    startActivity(pay);
                     String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
-                    db.writeNewOrder(auth.getUid(), new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
+                    CurrentOrder newOrder = new CurrentOrder(user.getFullName(), user.getAddress(), user.getPhoneNum(),
                             user.getEmail(), "request for bags", currentDateTime, Long.parseLong(bagRequestSpin.getSelectedItem().toString()),
-                            getRadioGroupText(group)));
+                            getRadioGroupText(group));
+                    pay.putExtra("total price", newOrder.getPrice());
+                    startActivity(pay);
+                    db.writeNewOrder(auth.getUid(), newOrder);
                     OrderSentDialog message = new OrderSentDialog();
                     message.show(getFragmentManager(), "thank you message");
                 }

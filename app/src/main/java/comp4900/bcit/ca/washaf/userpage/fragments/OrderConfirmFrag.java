@@ -96,20 +96,22 @@ public class OrderConfirmFrag extends Fragment {
             @Override
             public void onClick(View v) {
                 String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
+                String id = (db.getOrderId() + 1) + "";
                 if (!isDelivery) {
                     db.writeNewOrder(FirebaseAuth.getInstance().getCurrentUser().getUid(), new CurrentOrder(user.getFullName(),
                             user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
                             currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
                             getArguments().getString("pick up day"), getArguments().getString("pick up time"), getArguments().getString("delivery service"),
-                            getArguments().getString("delivery day"), getArguments().getString("delivery time")));
+                            getArguments().getString("delivery day"), getArguments().getString("delivery time"), id));
                 } else {
                     db.writeNewOrder(FirebaseAuth.getInstance().getCurrentUser().getUid(), new CurrentOrder(user.getFullName(),
                             user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
                             currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
                             getArguments().getString("pick up day"), getArguments().getString("pick up time"), getArguments().getString("delivery service"),
                             getArguments().getString("delivery day"), getArguments().getString("delivery time"),
-                            getArguments().getString("delivery location")));
+                            getArguments().getString("delivery location"), id));
                 }
+                db.setOrderId(id);
                 Intent intent = new Intent(getActivity(), OrderSentPage.class);
                 startActivity(intent);
                 getActivity().finish();

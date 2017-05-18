@@ -1,12 +1,15 @@
 package comp4900.bcit.ca.washaf.userpage.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +34,14 @@ import comp4900.bcit.ca.washaf.userpage.OrderPage;
 
 public class CustomerOrderFrag extends Fragment {
     private static final String TAG = "CustomerOrderFrag";
+    private static final String ADDRESS = "Address: ";
+    private static final String DELIVERY_ADDRESS = "Delivery address: ";
+    private static final String PICKUP_TYPE = "Pick up/Drop off: ";
+    private static final String PICKUP_DAY = "Day of pick up: ";
+    private static final String PICKUP_TIME = "Time of pick up: ";
+    private static final String DELIVERY_TYPE = "Delivery/Pick up from store: ";
+    private static final String DELIVERY_DAY = "Delivery day: ";
+    private static final String DELIVERY_TIME = "Delivery Time: ";
     private static final String TITLE = "Your Order Information";
     private static final String SERVICE = "Service: ";
     private static final String REQUESTED_TIME = "Requested Time: ";
@@ -56,7 +67,8 @@ public class CustomerOrderFrag extends Fragment {
         currentOrders = (ListView) view.findViewById(R.id.current_orders);
         auth = FirebaseAuth.getInstance().getCurrentUser();
         curOrderRef = db.getReference("current order").child(auth.getUid());
-        FirebaseListAdapter<CurrentOrder> adapter = new FirebaseListAdapter<CurrentOrder>(getActivity(),
+        introMessage.setVisibility(View.VISIBLE);
+        final FirebaseListAdapter<CurrentOrder> adapter = new FirebaseListAdapter<CurrentOrder>(getActivity(),
                 CurrentOrder.class, R.layout.cust_current_order_process, curOrderRef) {
             @Override
             protected void populateView(View v, CurrentOrder model, int position) {
@@ -64,8 +76,23 @@ public class CustomerOrderFrag extends Fragment {
                 ((TextView) v.findViewById(R.id.text2)).setText(REQUESTED_TIME + model.getRequestedTime());
                 ((TextView) v.findViewById(R.id.text3)).setText(STATUS + model.getStatus().toString());
             }
+
+            @Override
+            public void notifyDataSetChanged() {
+                super.notifyDataSetChanged();
+                if (getCount() > 0) {
+                    introMessage.setVisibility(View.GONE);
+                }
+                Log.d("FOO", "item count: " + getCount());
+            }
         };
         currentOrders.setAdapter(adapter);
+        currentOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showOrderDetailDialog(adapter.getItem(position));
+            }
+        });
 
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +112,21 @@ public class CustomerOrderFrag extends Fragment {
 
 
         return view;
+    }
+
+    private void showOrderDetailDialog(CurrentOrder order) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setIcon(R.drawable.radio_selected);
+        builder.setTitle("Order Detail");
+        builder.setMessage(SERVICE + order.getServiceType() + "\n\n"
+                            + PICKUP_TYPE + order.getPickup_type() + "\n\n"
+                            + PICKUP_DAY + order.getPickup_day() + "\n\n"
+                            + PICKUP_TIME + order.getPickup_time() + "\n\n"
+                            + DELIVERY_TYPE + order.getDelivery_type() + "\n\n"
+                            + DELIVERY_DAY + order.getDelivery_day() + "\n\n"
+                            + DELIVERY_TIME + order.getDelivery_time() + "\n\n"
+                            + (order.getDelivery_type().equalsIgnoreCase("delivery") ?  (DELIVERY_ADDRESS + order.getDelivery_address() + "\n\n") : ""));
+        builder.show();
     }
 
 }

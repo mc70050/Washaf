@@ -25,6 +25,8 @@ public class DBAccess {
     private DatabaseReference userRef;
     private DatabaseReference groupRef;
     private DatabaseReference curOrderRef;
+    private DatabaseReference orderIdRef;
+    private String id;
 
     /**
      * Default constructor.
@@ -67,6 +69,19 @@ public class DBAccess {
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+        orderIdRef = database.getReference("order number").child("id");
+        orderIdRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                id = dataSnapshot.getValue(String.class);
+                Log.d(TAG, id + " is current order id");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
@@ -139,5 +154,13 @@ public class DBAccess {
 
     public HashMap<String, CurrentOrder> getCustomerCurrentOrders() {
         return curOrderList;
+    }
+
+    public long getOrderId() {
+        return Long.parseLong(id);
+    }
+
+    public void setOrderId(String id) {
+        orderIdRef.setValue(id);
     }
 }

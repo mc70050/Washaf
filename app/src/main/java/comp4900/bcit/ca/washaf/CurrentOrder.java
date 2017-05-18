@@ -1,8 +1,16 @@
 package comp4900.bcit.ca.washaf;
 
+import android.support.constraint.solver.widgets.Snapshot;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by Michael on 2017-05-09.
@@ -26,9 +34,12 @@ public class CurrentOrder implements Serializable {
     private long   price;
     private OrderStatus status;
     private String customer_id;
+    private String orderId;
 
     private static final long WASHAF_PRICE = 35;
     private static final long BAG_PRICE = 10;
+    private static DatabaseReference ref = FirebaseDatabase.getInstance().getReference("order number").child("id");
+    private static String id;
 
     /**
      * Default constructor.
@@ -53,7 +64,8 @@ public class CurrentOrder implements Serializable {
      */
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
                         long quantity, String pickup_type, String pickup_day, String pickup_time, String delivery_type,
-                        String delivery_day, String delivery_time) {
+                        String delivery_day, String delivery_time, String orderId) {
+
         customerName = name;
         this.address = address;
         this.phone = phone;
@@ -69,11 +81,13 @@ public class CurrentOrder implements Serializable {
         setDelivery_day(delivery_day);
         setDelivery_time(delivery_time);
         setStatus(OrderStatus.REQUESTED);
+        setOrderId(orderId);
     }
 
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
                         long quantity, String pickup_type, String pickup_day, String pickup_time, String delivery_type,
-                        String delivery_day, String delivery_time, String delivery_address) {
+                        String delivery_day, String delivery_time, String delivery_address, String orderId) {
+
         customerName = name;
         this.address = address;
         this.phone = phone;
@@ -90,6 +104,7 @@ public class CurrentOrder implements Serializable {
         setDelivery_time(delivery_time);
         setDelivery_address(delivery_address);
         setStatus(OrderStatus.REQUESTED);
+        setOrderId(orderId);
     }
 
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
@@ -104,6 +119,26 @@ public class CurrentOrder implements Serializable {
         setDelivery_type(delivery_type);
         setPrice(serviceType, quantity);
         setStatus(OrderStatus.REQUESTED);
+    }
+
+    public CurrentOrder(CurrentOrder order) {
+        this.customerName = order.getCustomerName();
+        this.address = order.getAddress();
+        this.phone = order.getPhone();
+        this.email = order.getEmail();
+        this.serviceType = order.getServiceType();
+        this.requestedTime = order.getRequestedTime();
+        this.quantity = order.getQuantity();
+        this.price = order.getPrice();
+        this.customer_id = order.getCustomer_id();
+        this.orderId = order.getOrderId();
+        this.pickup_type = order.getPickup_type();
+        this.pickup_day = order.getPickup_day();
+        this.pickup_time = order.getPickup_time();
+        this.delivery_type = order.getDelivery_type();
+        this.delivery_day = order.getDelivery_day();
+        this.delivery_time = order.getDelivery_time();
+        this.delivery_address = order.getDelivery_address();
     }
 
     private void setPrice(String serviceType, long quantity) {
@@ -254,5 +289,14 @@ public class CurrentOrder implements Serializable {
 
     public void setDelivery_address(String delivery_address) {
         this.delivery_address = delivery_address;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+
     }
 }

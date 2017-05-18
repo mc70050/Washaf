@@ -42,6 +42,7 @@ public class PurchaseActivity extends Activity {
         startService(intent);
         payPal = (Button) findViewById(R.id.payPal);
         paymentAmt = (EditText) findViewById(R.id.paymentAmt);
+        paymentAmt.setText(getIntent().getExtras().getLong("total price") + "");
         payPal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
