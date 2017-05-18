@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -27,6 +28,8 @@ public class PurchaseActivity extends Activity {
             .environment(CONFIG_ENVIRONMENT)
             .clientId(CONFIG_CLIENT_ID);
     Button payPal;
+    private EditText paymentAmt;
+    private String paymentAmount;
     boolean paid = false;
 
     @Override
@@ -38,6 +41,7 @@ public class PurchaseActivity extends Activity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
         payPal = (Button) findViewById(R.id.payPal);
+        paymentAmt = (EditText) findViewById(R.id.paymentAmt);
         payPal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,6 +51,7 @@ public class PurchaseActivity extends Activity {
     }
 
     public void onBuyPressed() {
+        paymentAmount = paymentAmt.getText().toString();
         PayPalPayment thingToBuy = getThingToBuy(PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(PurchaseActivity.this, com.paypal.android.sdk.payments.PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -100,6 +105,7 @@ public class PurchaseActivity extends Activity {
     @Override
     public void onBackPressed() {
         if(paid==false){
+            Toast.makeText(getApplicationContext(), "Please make your payment", Toast.LENGTH_LONG).show();
         } else {
             super.onBackPressed(); // Process Back key  default behavior.
             super.finish();
