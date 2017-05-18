@@ -60,7 +60,7 @@ public class PurchaseActivity extends Activity {
     }
 
     private PayPalPayment getThingToBuy(String paymentIntent) {
-        return new PayPalPayment(new BigDecimal("0.01"), "CAD", "sample item",
+        return new PayPalPayment(new BigDecimal(String.valueOf(paymentAmount)), "CAD", "sample item",
                 paymentIntent);
     }
 
