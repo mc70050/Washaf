@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -28,7 +29,7 @@ public class PurchaseActivity extends Activity {
             .environment(CONFIG_ENVIRONMENT)
             .clientId(CONFIG_CLIENT_ID);
     Button payPal;
-    private EditText paymentAmt;
+    private TextView paymentAmt;
     private String paymentAmount;
     boolean paid = false;
 
@@ -41,7 +42,7 @@ public class PurchaseActivity extends Activity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
         payPal = (Button) findViewById(R.id.payPal);
-        paymentAmt = (EditText) findViewById(R.id.paymentAmt);
+        paymentAmt = (TextView) findViewById(R.id.paymentAmt);
         paymentAmt.setText(getIntent().getExtras().getLong("total price") + "");
         payPal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +82,16 @@ public class PurchaseActivity extends Activity {
                         Toast.makeText(getApplicationContext(), "PaymentConfirmation info received" +
                                 " from PayPal", Toast.LENGTH_LONG).show();
                         paid = true;
+                        TextView fp = (TextView) findViewById(R.id.finishPayment);
+                        fp.setVisibility(View.VISIBLE);
+                        TextView atp = (TextView) findViewById(R.id.AskToPay);
+                        atp.setVisibility(View.GONE);
+                        TextView pi = (TextView) findViewById(R.id.paymentInfo);
+                        pi.setVisibility(View.GONE);
+                        TextView pa = (TextView) findViewById(R.id.paymentAmt);
+                        pa.setVisibility(View.GONE);
+                        Button pp = (Button) findViewById(R.id.payPal);
+                        pp.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), "an extremely unlikely failure" +
                                 " occurred:", Toast.LENGTH_LONG).show();
