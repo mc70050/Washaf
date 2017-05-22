@@ -8,7 +8,7 @@ package comp4900.bcit.ca.washaf;
 public enum UserType {
     /* There is only one top level administrator, which is Sahil */
     TOP_ADMIN,
-    /* This is owner of other laundromats */
+    /* This is owner of other laundromats and manager of a store */
     ADMIN,
     /* This represents all employees that work inside a laundromat */
     EMPLOYEE,

@@ -1,6 +1,5 @@
 package comp4900.bcit.ca.washaf.userpage.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,11 +29,10 @@ import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.OrderPage;
 
 /**
- * Created by Michael on 2017-05-09.
+ * Created by apple on 2017-05-18.
  */
 
-public class CustomerOrderFrag extends Fragment {
-    private static final String TAG = "CustomerOrderFrag";
+public class CustomerOrderHistoryFrag extends Fragment {
     private static final String ADDRESS = "Address: ";
     private static final String ORDER_ID = "Order ID: ";
     private static final String DELIVERY_ADDRESS = "Delivery address: ";
@@ -56,37 +55,25 @@ public class CustomerOrderFrag extends Fragment {
     private static ListView currentOrders;
     private FirebaseUser auth;
     private Button orderButton;
-    private TextView introMessage;
 
     @Override
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.customer_order_frag, container, false);
+        final View view = inflater.inflate(R.layout.customer_order_history_frag, container, false);
         orderButton = (Button) view.findViewById(R.id.order_button);
-        introMessage = (TextView) view.findViewById(R.id.intro_message);
         getActivity().setTitle(TITLE);
         db = FirebaseDatabase.getInstance();
         currentOrders = (ListView) view.findViewById(R.id.current_orders);
         auth = FirebaseAuth.getInstance().getCurrentUser();
-        curOrderRef = db.getReference("current order").child(auth.getUid());
-        introMessage.setVisibility(View.VISIBLE);
+        curOrderRef = db.getReference("old order").child(auth.getUid());
         final FirebaseListAdapter<CurrentOrder> adapter = new FirebaseListAdapter<CurrentOrder>(getActivity(),
                 CurrentOrder.class, R.layout.cust_current_order_process, curOrderRef) {
             @Override
             protected void populateView(View v, CurrentOrder model, int position) {
+                ((ImageView) v.findViewById(R.id.list_logo)).setVisibility(View.GONE);
                 ((TextView) v.findViewById(R.id.text1)).setText(SERVICE + model.getServiceType());
                 ((TextView) v.findViewById(R.id.text2)).setText(REQUESTED_TIME + model.getRequestedTime());
                 ((TextView) v.findViewById(R.id.text3)).setText(STATUS + model.getStatus().toString());
-            }
-
-            @Override
-            public void notifyDataSetChanged() {
-                super.notifyDataSetChanged();
-                if (getCount() > 0) {
-                    introMessage.setVisibility(View.GONE);
-                }
-                Log.d("FOO", "item count: " + getCount());
             }
         };
         currentOrders.setAdapter(adapter);
@@ -123,18 +110,18 @@ public class CustomerOrderFrag extends Fragment {
         builder.setTitle("Order Detail");
         if (order.getServiceType().equalsIgnoreCase("request for bags")) {
             builder.setMessage(ORDER_ID + order.getOrderId() + "\n\n"
-                            + SERVICE + order.getServiceType() + "\n\n"
-                            + QUANTITY + order.getQuantity() + "\n\n"
-                            + PRICE + order.getPrice() + "\n\n"
-                            + DELIVERY_TYPE + order.getDelivery_type() + "\n\n");
+                    + SERVICE + order.getServiceType() + "\n\n"
+                    + QUANTITY + order.getQuantity() + "\n\n"
+                    + PRICE + order.getPrice() + "\n\n"
+                    + DELIVERY_TYPE + order.getDelivery_type() + "\n\n");
         } else {
             builder.setMessage(ORDER_ID + order.getOrderId() + "\n\n"
                     + SERVICE + order.getServiceType() + "\n\n"
                     + QUANTITY + order.getQuantity() + "\n\n"
                     + PRICE + order.getPrice() + "\n\n"
                     + PICKUP_TYPE + order.getPickup_type() + "\n\n"
-                    + (order.getPickup_type().equalsIgnoreCase("pick up") ? (PICKUP_DAY + order.getPickup_day() + "\n\n") : "")
-                    + (order.getPickup_type().equalsIgnoreCase("pick up") ? (PICKUP_TIME + order.getPickup_time() + "\n\n") : "")
+                    + PICKUP_DAY + order.getPickup_day() + "\n\n"
+                    + PICKUP_TIME + order.getPickup_time() + "\n\n"
                     + DELIVERY_TYPE + order.getDelivery_type() + "\n\n"
                     + DELIVERY_DAY + order.getDelivery_day() + "\n\n"
                     + DELIVERY_TIME + order.getDelivery_time() + "\n\n"
@@ -144,4 +131,3 @@ public class CustomerOrderFrag extends Fragment {
     }
 
 }
-

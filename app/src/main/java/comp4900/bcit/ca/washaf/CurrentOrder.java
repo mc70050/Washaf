@@ -1,16 +1,11 @@
 package comp4900.bcit.ca.washaf;
 
-import android.support.constraint.solver.widgets.Snapshot;
 import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 /**
  * Created by Michael on 2017-05-09.
@@ -38,8 +33,10 @@ public class CurrentOrder implements Serializable {
 
     private static final long WASHAF_PRICE = 35;
     private static final long BAG_PRICE = 10;
-    private static DatabaseReference ref = FirebaseDatabase.getInstance().getReference("order number").child("id");
-    private static String id;
+
+    private static final String WASHAF_SERVICE = "Wash and Fold";
+    private static final String BAG_REQUEST    = "request for bags";
+    private static final String PICKUP_SERVICE = "pick up";
 
     /**
      * Default constructor.
@@ -84,6 +81,36 @@ public class CurrentOrder implements Serializable {
         setOrderId(orderId);
     }
 
+    /*
+     * This constructor is used under the condition of:
+     *      Pick up type is drop off, therefore no pick up date and time is entered.
+     */
+    public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
+                        long quantity, String pickup_type, String delivery_type,
+                        String delivery_day, String delivery_time, String orderId) {
+
+        customerName = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.serviceType = serviceType;
+        this.requestedTime = requestedTime;
+        this.quantity = quantity;
+        setPrice(serviceType, quantity);
+        setPickup_type(pickup_type);
+        setPickup_day(pickup_day);
+        setPickup_time(pickup_time);
+        setDelivery_type(delivery_type);
+        setDelivery_day(delivery_day);
+        setDelivery_time(delivery_time);
+        setStatus(OrderStatus.REQUESTED);
+        setOrderId(orderId);
+    }
+
+    /*
+     * This constructor is used when pick up type is pick up and delivery is required.
+     * An additional parameter called delivery address is entered.
+     */
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
                         long quantity, String pickup_type, String pickup_day, String pickup_time, String delivery_type,
                         String delivery_day, String delivery_time, String delivery_address, String orderId) {
@@ -107,6 +134,38 @@ public class CurrentOrder implements Serializable {
         setOrderId(orderId);
     }
 
+    /*
+     * This constructor is used when pick up is required at the beginnning of service
+     * and delivery is required.
+     */
+    public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
+                        long quantity, String pickup_type, String delivery_type,
+                        String delivery_day, String delivery_time, String delivery_address, String orderId) {
+
+        customerName = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.serviceType = serviceType;
+        this.requestedTime = requestedTime;
+        this.quantity = quantity;
+        setPrice(serviceType, quantity);
+        setPickup_type(pickup_type);
+        setPickup_day(pickup_day);
+        setPickup_time(pickup_time);
+        setDelivery_type(delivery_type);
+        setDelivery_day(delivery_day);
+        setDelivery_time(delivery_time);
+        setDelivery_address(delivery_address);
+        setStatus(OrderStatus.REQUESTED);
+        setOrderId(orderId);
+    }
+
+    /*
+     * This constructor is used when customer requests for extra bags.
+     * No pick up type, date, and time is required and no delivery address indicated
+     * even if delivery is required.
+     */
     public CurrentOrder(String name, String address, String phone, String email, String serviceType, String requestedTime,
                         long quantity,String delivery_type, String orderId) {
         customerName = name;
@@ -122,6 +181,11 @@ public class CurrentOrder implements Serializable {
         setOrderId(orderId);
     }
 
+    /*
+     * Copy constructor. This is used when CurrentOrder objects
+     * are downloaded from the firebase database to convert data into
+     * objects.
+     */
     public CurrentOrder(CurrentOrder order) {
         this.customerName = order.getCustomerName();
         this.address = order.getAddress();
@@ -142,11 +206,14 @@ public class CurrentOrder implements Serializable {
         this.delivery_address = order.getDelivery_address();
     }
 
+    /**
+     * Sets the price according to the type of service and quantity requested.
+     */
     private void setPrice(String serviceType, long quantity) {
-        if (serviceType.equalsIgnoreCase("wash and fold")) {
+        if (serviceType.equalsIgnoreCase(WASHAF_SERVICE)) {
             price = WASHAF_PRICE * quantity;
-        } else if (serviceType.equalsIgnoreCase("request for bags")) {
-            if (delivery_type.equalsIgnoreCase("pick up")) {
+        } else if (serviceType.equalsIgnoreCase(BAG_REQUEST)) {
+            if (delivery_type.equalsIgnoreCase(PICKUP_SERVICE)) {
                 Log.d("setPrice", "pick up price");
                 price = BAG_PRICE * quantity;
             } else {
@@ -173,7 +240,6 @@ public class CurrentOrder implements Serializable {
     }
 
     public String getPhone() {
-        Log.d("Phone", phone);
         return phone;
     }
 

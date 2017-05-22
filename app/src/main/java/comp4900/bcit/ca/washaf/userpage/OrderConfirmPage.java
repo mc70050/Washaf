@@ -22,7 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerMainFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderHistoryFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.OrderConfirmFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.OrderFrag;
 
@@ -100,8 +102,8 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
 
         if (id == R.id.nav_order_bag) {
             Log.d("Navi", "clicked main");
+            loadMain();
         } else if (id == R.id.nav_order) {
-            // Handle the camera action
             Log.d("Navi", "clicked order");
             loadOrder();
         } else if (id == R.id.nav_logout) {
@@ -112,6 +114,9 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
         } else if (id == R.id.nav_account) {
             Log.d("Navi", "clicked account");
             loadAccount();
+        } else if (id == R.id.nav_order_history) {
+            Log.d("Navi", "clicked order history");
+            loadOrderHistory();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -123,6 +128,24 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
         Bundle bun = new Bundle();
         bun.putSerializable("user", user);
         return bun;
+    }
+
+    private void loadMain() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            CustomerMainFrag f = new CustomerMainFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerMainFrag)) {
+            CustomerMainFrag f = new CustomerMainFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {
+
+        }
+        ft.addToBackStack("main");
+        ft.commit();
     }
 
     private void loadOrder() {
@@ -140,7 +163,7 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
         } else {
 
         }
-
+        ft.addToBackStack("order");
         ft.commit();
     }
 
@@ -159,7 +182,7 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
         } else {
 
         }
-
+        ft.addToBackStack("account");
         ft.commit();
     }
 
@@ -178,7 +201,7 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
         } else {
 
         }
-
+        ft.addToBackStack("first order page");
         ft.commit();
     }
 
@@ -196,6 +219,26 @@ public class OrderConfirmPage extends AppCompatActivity implements NavigationVie
             f.setArguments(saveDataToFragment());
             ft.replace(R.id.customer_content, f, "tag");
         } else {}
+        ft.addToBackStack("confirm order page");
+        ft.commit();
+    }
+
+    private void loadOrderHistory() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            CustomerOrderHistoryFrag f = new CustomerOrderHistoryFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerOrderHistoryFrag)) {
+            Log.d("loadOrder", "fragment is not main");
+            CustomerOrderHistoryFrag f = new CustomerOrderHistoryFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {
+
+        }
+        ft.addToBackStack("history");
         ft.commit();
     }
 }

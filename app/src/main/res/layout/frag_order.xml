@@ -108,13 +108,13 @@
     </RadioGroup>
 
     <ImageView
+        android:id="@+id/choose_day_icon"
         android:src="@drawable/icon_schedule"
         android:background="@drawable/cell_shape"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="21dp"
         android:layout_marginTop="12dp"
-        android:id="@+id/choose_day_icon"
         android:layout_below="@+id/radioGroup"
         android:layout_alignParentStart="true" />
 
@@ -259,7 +259,7 @@
         android:layout_height="wrap_content"
         style="@style/spinner_style"
         android:layout_below="@+id/choose_quantity"
-        android:layout_alignStart="@+id/choose_time_icon"
+        android:layout_alignStart="@+id/choose_store_icon"
         android:layout_marginTop="11dp" />
 
     <TextView

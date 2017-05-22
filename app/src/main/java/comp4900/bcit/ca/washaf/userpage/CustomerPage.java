@@ -1,13 +1,10 @@
 package comp4900.bcit.ca.washaf.userpage;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,8 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +24,11 @@ import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerMainFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderHistoryFrag;
 
+/**
+ * Main page customer sees when he/she first logs in.
+ */
 public class CustomerPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -62,6 +61,7 @@ public class CustomerPage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         user = (User)getIntent().getSerializableExtra("user");
         setTitle("Welcome, " + user.getFirstName() + " " + user.getLastName());
+        // First fragment to load for content is the order fragment
         loadOrder();
     }
 
@@ -72,9 +72,6 @@ public class CustomerPage extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(getBaseContext(), "You have been successfully logged out.", Toast.LENGTH_LONG).show();
-            finish();
         }
     }
 
@@ -94,6 +91,7 @@ public class CustomerPage extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // Currently no function for clicking on the settings button
             return true;
         }
 
@@ -104,13 +102,13 @@ public class CustomerPage extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        // Loads a corresponding fragment when an option is chosen from the menu
         int id = item.getItemId();
 
         if (id == R.id.nav_order_bag) {
             Log.d("Navi", "clicked main");
             loadMain();
         } else if (id == R.id.nav_order) {
-            // Handle the camera action
             Log.d("Navi", "clicked order");
             loadOrder();
         } else if (id == R.id.nav_logout) {
@@ -121,6 +119,9 @@ public class CustomerPage extends AppCompatActivity
         } else if (id == R.id.nav_account) {
             Log.d("Navi", "clicked account");
             loadAccount();
+        } else if (id == R.id.nav_order_history) {
+            Log.d("Navi", "clicked order history");
+            loadOrderHistory();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -128,6 +129,11 @@ public class CustomerPage extends AppCompatActivity
         return true;
     }
 
+    /*
+     * This method returns a Bundle object that contains the
+     * current User object. This is done to pass the User object
+     * around so user information can be easily accessed.
+     */
     private Bundle saveDataToFragment() {
         Bundle bun = new Bundle();
         bun.putSerializable("user", user);
@@ -148,7 +154,7 @@ public class CustomerPage extends AppCompatActivity
         } else {
 
         }
-
+        ft.addToBackStack("main");
         ft.commit();
     }
 
@@ -167,7 +173,7 @@ public class CustomerPage extends AppCompatActivity
         } else {
 
         }
-
+        ft.addToBackStack("order");
         ft.commit();
     }
 
@@ -186,7 +192,26 @@ public class CustomerPage extends AppCompatActivity
         } else {
 
         }
+        ft.addToBackStack("account");
+        ft.commit();
+    }
 
+    private void loadOrderHistory() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            CustomerOrderHistoryFrag f = new CustomerOrderHistoryFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerOrderHistoryFrag)) {
+            Log.d("loadOrder", "fragment is not main");
+            CustomerOrderHistoryFrag f = new CustomerOrderHistoryFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {
+
+        }
+        ft.addToBackStack("history");
         ft.commit();
     }
 }

@@ -69,9 +69,9 @@ public class OrderFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ImageView chooseDayIcon;
+        final ImageView chooseDayIcon;
         ImageView chooseDayIcon2;
-        ImageView chooseTimeIcon;
+        final ImageView chooseTimeIcon;
         ImageView chooseTimeIcon2;
 
         pickupDateChosen = false;
@@ -145,9 +145,29 @@ public class OrderFrag extends Fragment {
                 if (isChecked) {
                     storeIcon.setVisibility(View.VISIBLE);
                     chooseStoreText.setVisibility(View.VISIBLE);
+                    chooseDayText.setText("No need to choose a date.");
+                    chooseTimeText.setText("No need to choose a time.");
+                    pickupDateChosen = true;
+                    chooseDayIcon.setOnClickListener(null);
+                    chooseTimeIcon.setOnClickListener(null);
                 } else {
                     storeIcon.setVisibility(View.GONE);
                     chooseStoreText.setVisibility(View.GONE);
+                    chooseDayText.setText(R.string.choose_pickup_day);
+                    chooseTimeText.setText(R.string.choose_pickup_time);
+                    pickupDateChosen = false;
+                    chooseDayIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            createChooseDayDialog();
+                        }
+                    });
+                    chooseTimeIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            createTimeDialog(0);
+                        }
+                    });
                 }
             }
         });
@@ -337,12 +357,16 @@ public class OrderFrag extends Fragment {
     }
 
     public boolean isAllFieldsFilled() {
-        if (pickupDateChosen && pickUpTimeChosen  && deliveryDateChosen && deliveryTimeChosen) {
+        if (deliveryDateChosen && deliveryTimeChosen) {
             if (dropOffButton.isChecked()) {
                 if (!dropOffLocationChosen) {
                     return false;
                 }
-            }  else if (deliveryButton.isChecked()) {
+            }  else if (!dropOffButton.isChecked()) {
+                if (pickupDateChosen == false || pickUpTimeChosen == false) {
+                    return false;
+                }
+            } else if (deliveryButton.isChecked()) {
                 if (addressText.getText().toString().isEmpty()) {
                     return false;
                 }

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +38,21 @@ import comp4900.bcit.ca.washaf.User;
  */
 
 public class EmployeeMainFrag extends Fragment {
+    private static final String ADDRESS = "Address: ";
+    private static final String ORDER_ID = "Order ID: ";
+    private static final String DELIVERY_ADDRESS = "Delivery address: ";
+    private static final String PICKUP_TYPE = "Pick up/Drop off: ";
+    private static final String PICKUP_DAY = "Day of pick up: ";
+    private static final String PICKUP_TIME = "Time of pick up: ";
+    private static final String DELIVERY_TYPE = "Delivery/Pick up from store: ";
+    private static final String DELIVERY_DAY = "Delivery day: ";
+    private static final String DELIVERY_TIME = "Delivery Time: ";
+    private static final String TITLE = "Your Order Information";
+    private static final String SERVICE = "Service: ";
+    private static final String PRICE = "Price: $";
+    private static final String REQUESTED_TIME = "Requested Time: ";
+    private static final String STATUS         = "Status: ";
+    private static final String QUANTITY = "Quantity: ";
 
     private Button changeStatusButton;
     private boolean working_status;
@@ -72,6 +88,13 @@ public class EmployeeMainFrag extends Fragment {
                 adapter = new EmployeeOrderAdapter(curOrderList);
 
                 list.setAdapter(adapter);
+
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        showOrderDetailDialog(adapter.getItem(position).getValue());
+                    }
+                });
                 if (curOrderList.size() > oldSize)
                     showNotification(view);
             }
@@ -185,7 +208,26 @@ public class EmployeeMainFrag extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setIcon(R.drawable.radio_selected);
         builder.setTitle("Confirm status update");
-        builder.setPositiveButton(R.string.order_confirmation_ok, new DialogInterface.OnClickListener() {
+        if (item.getServiceType().equalsIgnoreCase("request for bags")) {
+            builder.setMessage(ORDER_ID + item.getOrderId() + "\n\n"
+                    + SERVICE + item.getServiceType() + "\n\n"
+                    + QUANTITY + item.getQuantity() + "\n\n"
+                    + PRICE + item.getPrice() + "\n\n"
+                    + DELIVERY_TYPE + item.getDelivery_type() + "\n\n");
+        } else {
+            builder.setMessage(ORDER_ID + item.getOrderId() + "\n\n"
+                    + SERVICE + item.getServiceType() + "\n\n"
+                    + QUANTITY + item.getQuantity() + "\n\n"
+                    + PRICE + item.getPrice() + "\n\n"
+                    + PICKUP_TYPE + item.getPickup_type() + "\n\n"
+                    + (item.getPickup_type().equalsIgnoreCase("pick up") ? (PICKUP_DAY + item.getPickup_day() + "\n\n") : "")
+                    + (item.getPickup_type().equalsIgnoreCase("pick up") ? (PICKUP_TIME + item.getPickup_time() + "\n\n") : "")
+                    + DELIVERY_TYPE + item.getDelivery_type() + "\n\n"
+                    + DELIVERY_DAY + item.getDelivery_day() + "\n\n"
+                    + DELIVERY_TIME + item.getDelivery_time() + "\n\n"
+                    + (item.getDelivery_type().equalsIgnoreCase("delivery") ? (DELIVERY_ADDRESS + item.getDelivery_address() + "\n\n") : ""));
+        }
+        builder.setPositiveButton("Update Status", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (item.getStatus() == OrderStatus.ASSIGNED) {
                     if (item.getServiceType().equalsIgnoreCase("request for bags")) {
@@ -218,6 +260,32 @@ public class EmployeeMainFrag extends Fragment {
                 // User cancelled the dialog
             }
         });
+        builder.show();
+    }
+
+    private void showOrderDetailDialog(CurrentOrder order) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setIcon(R.drawable.radio_selected);
+        builder.setTitle("Order Detail");
+        if (order.getServiceType().equalsIgnoreCase("request for bags")) {
+            builder.setMessage(ORDER_ID + order.getOrderId() + "\n\n"
+                    + SERVICE + order.getServiceType() + "\n\n"
+                    + QUANTITY + order.getQuantity() + "\n\n"
+                    + PRICE + order.getPrice() + "\n\n"
+                    + DELIVERY_TYPE + order.getDelivery_type() + "\n\n");
+        } else {
+            builder.setMessage(ORDER_ID + order.getOrderId() + "\n\n"
+                    + SERVICE + order.getServiceType() + "\n\n"
+                    + QUANTITY + order.getQuantity() + "\n\n"
+                    + PRICE + order.getPrice() + "\n\n"
+                    + PICKUP_TYPE + order.getPickup_type() + "\n\n"
+                    + PICKUP_DAY + order.getPickup_day() + "\n\n"
+                    + PICKUP_TIME + order.getPickup_time() + "\n\n"
+                    + DELIVERY_TYPE + order.getDelivery_type() + "\n\n"
+                    + DELIVERY_DAY + order.getDelivery_day() + "\n\n"
+                    + DELIVERY_TIME + order.getDelivery_time() + "\n\n"
+                    + (order.getDelivery_type().equalsIgnoreCase("delivery") ? (DELIVERY_ADDRESS + order.getDelivery_address() + "\n\n") : ""));
+        }
         builder.show();
     }
 }

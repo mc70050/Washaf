@@ -24,6 +24,7 @@ import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerAccountFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerMainFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderFrag;
+import comp4900.bcit.ca.washaf.userpage.fragments.CustomerOrderHistoryFrag;
 import comp4900.bcit.ca.washaf.userpage.fragments.OrderFrag;
 
 public class OrderPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -114,6 +115,9 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_account) {
             Log.d("Navi", "clicked account");
             loadAccount();
+        } else if (id == R.id.nav_order_history) {
+            Log.d("Navi", "clicked order history");
+            loadOrderHistory();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,7 +145,7 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         } else {
 
         }
-
+        ft.addToBackStack("main");
         ft.commit();
     }
 
@@ -160,7 +164,7 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         } else {
 
         }
-
+        ft.addToBackStack("order");
         ft.commit();
     }
 
@@ -179,7 +183,7 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         } else {
 
         }
-
+        ft.addToBackStack("account");
         ft.commit();
     }
 
@@ -198,7 +202,26 @@ public class OrderPage extends AppCompatActivity implements NavigationView.OnNav
         } else {
 
         }
+        ft.addToBackStack("first order page");
+        ft.commit();
+    }
 
+    private void loadOrderHistory() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (fm.findFragmentByTag("tag") == null) {
+            CustomerOrderHistoryFrag f = new CustomerOrderHistoryFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else if (!(fm.findFragmentByTag("tag") instanceof CustomerOrderHistoryFrag)) {
+            Log.d("loadOrder", "fragment is not main");
+            CustomerOrderHistoryFrag f = new CustomerOrderHistoryFrag();
+            f.setArguments(saveDataToFragment());
+            ft.replace(R.id.customer_content, f, "tag");
+        } else {
+
+        }
+        ft.addToBackStack("history");
         ft.commit();
     }
 }

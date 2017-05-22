@@ -2,12 +2,11 @@ package comp4900.bcit.ca.washaf;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -28,7 +27,7 @@ public class PurchaseActivity extends Activity {
             .environment(CONFIG_ENVIRONMENT)
             .clientId(CONFIG_CLIENT_ID);
     Button payPal;
-    private EditText paymentAmt;
+    private TextView paymentAmt;
     private String paymentAmount;
     boolean paid = false;
 
@@ -41,7 +40,7 @@ public class PurchaseActivity extends Activity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
         payPal = (Button) findViewById(R.id.payPal);
-        paymentAmt = (EditText) findViewById(R.id.paymentAmt);
+        paymentAmt = (TextView) findViewById(R.id.paymentAmt);
         paymentAmt.setText(getIntent().getExtras().getLong("total price") + "");
         payPal.setOnClickListener(new View.OnClickListener() {
             @Override

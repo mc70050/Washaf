@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * Created by Michael on 2017-05-09.
+ * A custom adapter that contains a HashMap to fill a listview.
  */
 
 public class OrderAdapter extends BaseAdapter {

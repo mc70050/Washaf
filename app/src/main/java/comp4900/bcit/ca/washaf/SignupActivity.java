@@ -61,7 +61,6 @@ public class SignupActivity extends AppCompatActivity {
     @Bind(R.id.input_password_check) EditText _passwordCheckText;
     @Bind(R.id.btn_signup)          Button   _signupButton;
     @Bind(R.id.link_login)          TextView _loginLink;
-    @Bind(R.id.test)                TextView _testLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,21 +83,10 @@ public class SignupActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
             }
         });
-        _testLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                test();
-            }
-        });
         admins = new HashMap<>();
         getAdmins();
 
         setTextWatcher();
-    }
-
-    public void test() {
-        Log.d(TAG, "test in progress");
-        saveUser("UID2", "Employee1", "Test", "mc700@gmail.com", "6048082829", "Dubai");
     }
 
     /**

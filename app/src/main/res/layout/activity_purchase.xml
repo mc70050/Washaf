@@ -7,23 +7,10 @@
     tools:context="comp4900.bcit.ca.washaf.PurchaseActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="bag price: 20CAD * bag number"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="delivery fee: 20CAD"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="whole fee: bag + delivery"/>
-
-    <EditText
         android:id="@+id/paymentAmt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="100dp"
         android:hint="enter amount"
         android:textAlignment="center" />
 

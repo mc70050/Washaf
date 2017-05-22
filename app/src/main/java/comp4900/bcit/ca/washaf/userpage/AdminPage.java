@@ -15,6 +15,10 @@ import android.view.MenuItem;
 
 import comp4900.bcit.ca.washaf.R;
 
+/**
+ * Administrator's page on the web app.
+ * Currently not used.
+ */
 public class AdminPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

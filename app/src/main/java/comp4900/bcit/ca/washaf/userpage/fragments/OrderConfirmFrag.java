@@ -16,6 +16,7 @@ import java.util.Date;
 
 import comp4900.bcit.ca.washaf.CurrentOrder;
 import comp4900.bcit.ca.washaf.DBAccess;
+import comp4900.bcit.ca.washaf.PurchaseActivity;
 import comp4900.bcit.ca.washaf.R;
 import comp4900.bcit.ca.washaf.User;
 import comp4900.bcit.ca.washaf.userpage.OrderSentPage;
@@ -42,6 +43,7 @@ public class OrderConfirmFrag extends Fragment {
     private User user;
 
     private boolean isDelivery = false;
+    private boolean isDropOff  = false;
 
     public static final String SERVICE = "Service: ";
     public static final String PICKUP_DROP = "Pick Up/Drop Off: ";
@@ -75,6 +77,11 @@ public class OrderConfirmFrag extends Fragment {
 
         service_type.setText(SERVICE + getArguments().getString("service"));
         pickup_type.setText(PICKUP_DROP + getArguments().get("pick up service"));
+        if (getArguments().get("pick up service").toString().equalsIgnoreCase("drop off")) {
+            pickup_day.setVisibility(View.GONE);
+            pickup_time.setVisibility(View.GONE);
+            isDropOff = true;
+        }
         pickup_day.setText(PICKUP_DAY + getArguments().getString("pick up day"));
         pickup_time.setText(PICKUP_TIME + getArguments().getString("pick up time"));
         if (getArguments().getString("drop off location") != null) {
@@ -97,19 +104,42 @@ public class OrderConfirmFrag extends Fragment {
             public void onClick(View v) {
                 String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
                 String id = (db.getOrderId() + 1) + "";
+                CurrentOrder newOrder;
+                Intent pay = new Intent(getActivity(), PurchaseActivity.class);
                 if (!isDelivery) {
-                    db.writeNewOrder(FirebaseAuth.getInstance().getCurrentUser().getUid(), new CurrentOrder(user.getFullName(),
-                            user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
-                            currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
-                            getArguments().getString("pick up day"), getArguments().getString("pick up time"), getArguments().getString("delivery service"),
-                            getArguments().getString("delivery day"), getArguments().getString("delivery time"), id));
+                    if (isDropOff) {
+                        newOrder = new CurrentOrder(user.getFullName(),
+                                user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
+                                currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
+                                getArguments().getString("delivery service"), getArguments().getString("delivery day"),
+                                getArguments().getString("delivery time"), id);
+                    } else {
+                        newOrder = new CurrentOrder(user.getFullName(),
+                                user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
+                                currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
+                                getArguments().getString("pick up day"), getArguments().getString("pick up time"), getArguments().getString("delivery service"),
+                                getArguments().getString("delivery day"), getArguments().getString("delivery time"), id);
+                    }
+                    db.writeNewOrder(FirebaseAuth.getInstance().getCurrentUser().getUid(), newOrder);
+                    pay.putExtra("total price", newOrder.getPrice());
                 } else {
-                    db.writeNewOrder(FirebaseAuth.getInstance().getCurrentUser().getUid(), new CurrentOrder(user.getFullName(),
-                            user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
-                            currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
-                            getArguments().getString("pick up day"), getArguments().getString("pick up time"), getArguments().getString("delivery service"),
-                            getArguments().getString("delivery day"), getArguments().getString("delivery time"),
-                            getArguments().getString("delivery location"), id));
+                    if (isDropOff) {
+                        newOrder = new CurrentOrder(user.getFullName(),
+                                user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
+                                currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
+                                getArguments().getString("delivery service"),
+                                getArguments().getString("delivery day"), getArguments().getString("delivery time"),
+                                getArguments().getString("delivery location"), id);
+                    } else {
+                        newOrder = new CurrentOrder(user.getFullName(),
+                                user.getAddress(), user.getPhoneNum(), user.getEmail(), getArguments().getString("service"),
+                                currentDateTime, Long.parseLong(getArguments().getString("quantity")), getArguments().getString("pick up service"),
+                                getArguments().getString("pick up day"), getArguments().getString("pick up time"), getArguments().getString("delivery service"),
+                                getArguments().getString("delivery day"), getArguments().getString("delivery time"),
+                                getArguments().getString("delivery location"), id);
+                    }
+                    db.writeNewOrder(FirebaseAuth.getInstance().getCurrentUser().getUid(), newOrder);
+                    pay.putExtra("total price", newOrder.getPrice());
                 }
                 db.setOrderId(id);
                 Intent intent = new Intent(getActivity(), OrderSentPage.class);
