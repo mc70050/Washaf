@@ -7,11 +7,23 @@
     tools:context="comp4900.bcit.ca.washaf.PurchaseActivity">
 
     <TextView
+        android:id="@+id/AskToPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please make your payment"/>
+
+    <TextView
+        android:id="@+id/paymentInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Your total amount is CAD "
+        android:textAlignment="center" />
+
+    <TextView
         android:id="@+id/paymentAmt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:hint="enter amount"
         android:textAlignment="center" />
 
     <Button
@@ -23,5 +35,12 @@
         android:background="#1565C0"
         android:textColor="#fff"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/finishPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thank you for your payment! Now you can go back to main page."
+        android:visibility="invisible"/>
 
 </LinearLayout>

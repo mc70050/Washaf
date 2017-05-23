@@ -2,10 +2,12 @@ package comp4900.bcit.ca.washaf;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +62,7 @@ public class PurchaseActivity extends Activity {
     }
 
     private PayPalPayment getThingToBuy(String paymentIntent) {
-        return new PayPalPayment(new BigDecimal(String.valueOf(paymentAmount)), "CAD", "sample item",
+        return new PayPalPayment(new BigDecimal(String.valueOf(paymentAmount)), "CAD", "washaf item",
                 paymentIntent);
     }
 
@@ -80,6 +82,16 @@ public class PurchaseActivity extends Activity {
                         Toast.makeText(getApplicationContext(), "PaymentConfirmation info received" +
                                 " from PayPal", Toast.LENGTH_LONG).show();
                         paid = true;
+                        TextView fp = (TextView) findViewById(R.id.finishPayment);
+                        fp.setVisibility(View.VISIBLE);
+                        TextView atp = (TextView) findViewById(R.id.AskToPay);
+                        atp.setVisibility(View.GONE);
+                        TextView pi = (TextView) findViewById(R.id.paymentInfo);
+                        pi.setVisibility(View.GONE);
+                        TextView pa = (TextView) findViewById(R.id.paymentAmt);
+                        pa.setVisibility(View.GONE);
+                        Button pp = (Button) findViewById(R.id.payPal);
+                        pp.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), "an extremely unlikely failure" +
                                 " occurred:", Toast.LENGTH_LONG).show();
