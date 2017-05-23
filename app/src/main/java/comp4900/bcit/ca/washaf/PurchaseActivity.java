@@ -21,9 +21,9 @@ import org.json.JSONException;
 import java.math.BigDecimal;
 
 public class PurchaseActivity extends Activity {
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
     // note that these credentials will differ between live & sandbox environments.
-    private static final String CONFIG_CLIENT_ID = "AccBRuQPf2OVPU8RmtJewWzJKr5qcAgqqxEFULaU4VJdifvJ_pss3ffWhbzwzFOh6SQPV0AAwLPxFMYW";
+    private static final String CONFIG_CLIENT_ID = "AfTQETr0m-IS72HotGsKi7X0c6kMhExhps1G9XHY48200jVK3AMlXl__BFREIr8wWcuDnx8gzsatkld7";
     private static final int REQUEST_CODE_PAYMENT = 1;
     private static PayPalConfiguration config = new PayPalConfiguration()
             .environment(CONFIG_ENVIRONMENT)
@@ -62,7 +62,7 @@ public class PurchaseActivity extends Activity {
     }
 
     private PayPalPayment getThingToBuy(String paymentIntent) {
-        return new PayPalPayment(new BigDecimal(String.valueOf(paymentAmount)), "CAD", "sample item",
+        return new PayPalPayment(new BigDecimal(String.valueOf(paymentAmount)), "CAD", "washaf item",
                 paymentIntent);
     }
 
