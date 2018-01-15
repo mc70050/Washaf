@@ -9,4 +9,4 @@ Version May 3
 - Signup now saves data to Firebase authentication properly
 - Signup saves user data to Firebase database using the user's UID for recognition
 Clone the repository to the directory.
-$ git clone https://github.com/JasonSekhon17/4900.git
+$ git clone https://github.com/mc70050/Washaf.git
